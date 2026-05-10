@@ -8,97 +8,102 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as GameRoomIdLobbyRouteImport } from "./routes/game/$roomId/lobby";
-import { Route as GameRoomIdPlayRouteImport } from "./routes/game/$roomId/play";
-import { Route as GameCreateRouteImport } from "./routes/game/create";
-import { Route as IndexRouteImport } from "./routes/index";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as GameCreateRouteImport } from './routes/game/create'
+import { Route as GameRoomIdPlayRouteImport } from './routes/game/$roomId/play'
+import { Route as GameRoomIdLobbyRouteImport } from './routes/game/$roomId/lobby'
 
 const IndexRoute = IndexRouteImport.update({
-  id: "/",
-  path: "/",
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GameCreateRoute = GameCreateRouteImport.update({
-  id: "/game/create",
-  path: "/game/create",
+  id: '/game/create',
+  path: '/game/create',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GameRoomIdPlayRoute = GameRoomIdPlayRouteImport.update({
-  id: "/game/$roomId/play",
-  path: "/game/$roomId/play",
+  id: '/game/$roomId/play',
+  path: '/game/$roomId/play',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const GameRoomIdLobbyRoute = GameRoomIdLobbyRouteImport.update({
-  id: "/game/$roomId/lobby",
-  path: "/game/$roomId/lobby",
+  id: '/game/$roomId/lobby',
+  path: '/game/$roomId/lobby',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  "/": typeof IndexRoute;
-  "/game/create": typeof GameCreateRoute;
-  "/game/$roomId/lobby": typeof GameRoomIdLobbyRoute;
-  "/game/$roomId/play": typeof GameRoomIdPlayRoute;
+  '/': typeof IndexRoute
+  '/game/create': typeof GameCreateRoute
+  '/game/$roomId/lobby': typeof GameRoomIdLobbyRoute
+  '/game/$roomId/play': typeof GameRoomIdPlayRoute
 }
 export interface FileRoutesByTo {
-  "/": typeof IndexRoute;
-  "/game/create": typeof GameCreateRoute;
-  "/game/$roomId/lobby": typeof GameRoomIdLobbyRoute;
-  "/game/$roomId/play": typeof GameRoomIdPlayRoute;
+  '/': typeof IndexRoute
+  '/game/create': typeof GameCreateRoute
+  '/game/$roomId/lobby': typeof GameRoomIdLobbyRoute
+  '/game/$roomId/play': typeof GameRoomIdPlayRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/": typeof IndexRoute;
-  "/game/create": typeof GameCreateRoute;
-  "/game/$roomId/lobby": typeof GameRoomIdLobbyRoute;
-  "/game/$roomId/play": typeof GameRoomIdPlayRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/game/create': typeof GameCreateRoute
+  '/game/$roomId/lobby': typeof GameRoomIdLobbyRoute
+  '/game/$roomId/play': typeof GameRoomIdPlayRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/game/create" | "/game/$roomId/lobby" | "/game/$roomId/play";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/game/create" | "/game/$roomId/lobby" | "/game/$roomId/play";
-  id: "__root__" | "/" | "/game/create" | "/game/$roomId/lobby" | "/game/$roomId/play";
-  fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/game/create' | '/game/$roomId/lobby' | '/game/$roomId/play'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/game/create' | '/game/$roomId/lobby' | '/game/$roomId/play'
+  id:
+    | '__root__'
+    | '/'
+    | '/game/create'
+    | '/game/$roomId/lobby'
+    | '/game/$roomId/play'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  GameCreateRoute: typeof GameCreateRoute;
-  GameRoomIdLobbyRoute: typeof GameRoomIdLobbyRoute;
-  GameRoomIdPlayRoute: typeof GameRoomIdPlayRoute;
+  IndexRoute: typeof IndexRoute
+  GameCreateRoute: typeof GameCreateRoute
+  GameRoomIdLobbyRoute: typeof GameRoomIdLobbyRoute
+  GameRoomIdPlayRoute: typeof GameRoomIdPlayRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/": {
-      id: "/";
-      path: "/";
-      fullPath: "/";
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/game/create": {
-      id: "/game/create";
-      path: "/game/create";
-      fullPath: "/game/create";
-      preLoaderRoute: typeof GameCreateRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/game/$roomId/play": {
-      id: "/game/$roomId/play";
-      path: "/game/$roomId/play";
-      fullPath: "/game/$roomId/play";
-      preLoaderRoute: typeof GameRoomIdPlayRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/game/$roomId/lobby": {
-      id: "/game/$roomId/lobby";
-      path: "/game/$roomId/lobby";
-      fullPath: "/game/$roomId/lobby";
-      preLoaderRoute: typeof GameRoomIdLobbyRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/create': {
+      id: '/game/create'
+      path: '/game/create'
+      fullPath: '/game/create'
+      preLoaderRoute: typeof GameCreateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/$roomId/play': {
+      id: '/game/$roomId/play'
+      path: '/game/$roomId/play'
+      fullPath: '/game/$roomId/play'
+      preLoaderRoute: typeof GameRoomIdPlayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/game/$roomId/lobby': {
+      id: '/game/$roomId/lobby'
+      path: '/game/$roomId/lobby'
+      fullPath: '/game/$roomId/lobby'
+      preLoaderRoute: typeof GameRoomIdLobbyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,7 +112,7 @@ const rootRouteChildren: RootRouteChildren = {
   GameCreateRoute: GameCreateRoute,
   GameRoomIdLobbyRoute: GameRoomIdLobbyRoute,
   GameRoomIdPlayRoute: GameRoomIdPlayRoute,
-};
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
