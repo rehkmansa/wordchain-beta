@@ -1,10 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/game/$roomId/play")({
-  component: Play,
-});
-
-function Play() {
+const Play = () => {
   const { roomId } = Route.useParams();
 
   return (
@@ -13,4 +9,8 @@ function Play() {
       <p className="text-neutral-600">Room: {roomId}</p>
     </div>
   );
-}
+};
+
+export const Route = createFileRoute("/game/$roomId/play")({
+  component: Play,
+});

@@ -1,10 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/game/$roomId/lobby")({
-  component: Lobby,
-});
-
-function Lobby() {
+const Lobby = () => {
   const { roomId } = Route.useParams();
   const navigate = useNavigate();
 
@@ -22,4 +18,8 @@ function Lobby() {
       </button>
     </div>
   );
-}
+};
+
+export const Route = createFileRoute("/game/$roomId/lobby")({
+  component: Lobby,
+});
