@@ -1,0 +1,27 @@
+{
+  "name": "wordchain",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "bun run --filter '*' dev",
+    "dev:web": "bun run --filter web dev",
+    "dev:backend": "bun run --watch apps/backend/src/index.ts",
+    "build": "bun run --filter '*' build",
+    "build:web": "bun run --filter web build",
+    "typecheck": "bun run --filter '*' typecheck",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check --write .",
+    "knip": "knip"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.9",
+    "knip": "^6.1.0",
+    "lefthook": "^2.1.4",
+    "typescript": "^5.8.0"
+  }
+}
