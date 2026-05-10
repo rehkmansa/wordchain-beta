@@ -9,20 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as GameCreateRouteImport } from './routes/game/create'
+import { Route as SplashRouteImport } from './routes/_splash'
+import { Route as SplashIndexRouteImport } from './routes/_splash/index'
 import { Route as GameRoomIdPlayRouteImport } from './routes/game/$roomId/play'
 import { Route as GameRoomIdLobbyRouteImport } from './routes/game/$roomId/lobby'
+import { Route as SplashGameCreateRouteImport } from './routes/_splash/game/create'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const SplashRoute = SplashRouteImport.update({
+  id: '/_splash',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GameCreateRoute = GameCreateRouteImport.update({
-  id: '/game/create',
-  path: '/game/create',
-  getParentRoute: () => rootRouteImport,
+const SplashIndexRoute = SplashIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SplashRoute,
 } as any)
 const GameRoomIdPlayRoute = GameRoomIdPlayRouteImport.update({
   id: '/game/$roomId/play',
@@ -34,23 +34,29 @@ const GameRoomIdLobbyRoute = GameRoomIdLobbyRouteImport.update({
   path: '/game/$roomId/lobby',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SplashGameCreateRoute = SplashGameCreateRouteImport.update({
+  id: '/game/create',
+  path: '/game/create',
+  getParentRoute: () => SplashRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/game/create': typeof GameCreateRoute
+  '/': typeof SplashIndexRoute
+  '/game/create': typeof SplashGameCreateRoute
   '/game/$roomId/lobby': typeof GameRoomIdLobbyRoute
   '/game/$roomId/play': typeof GameRoomIdPlayRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/game/create': typeof GameCreateRoute
+  '/': typeof SplashIndexRoute
+  '/game/create': typeof SplashGameCreateRoute
   '/game/$roomId/lobby': typeof GameRoomIdLobbyRoute
   '/game/$roomId/play': typeof GameRoomIdPlayRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/game/create': typeof GameCreateRoute
+  '/_splash': typeof SplashRouteWithChildren
+  '/_splash/': typeof SplashIndexRoute
+  '/_splash/game/create': typeof SplashGameCreateRoute
   '/game/$roomId/lobby': typeof GameRoomIdLobbyRoute
   '/game/$roomId/play': typeof GameRoomIdPlayRoute
 }
@@ -61,34 +67,34 @@ export interface FileRouteTypes {
   to: '/' | '/game/create' | '/game/$roomId/lobby' | '/game/$roomId/play'
   id:
     | '__root__'
-    | '/'
-    | '/game/create'
+    | '/_splash'
+    | '/_splash/'
+    | '/_splash/game/create'
     | '/game/$roomId/lobby'
     | '/game/$roomId/play'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  GameCreateRoute: typeof GameCreateRoute
+  SplashRoute: typeof SplashRouteWithChildren
   GameRoomIdLobbyRoute: typeof GameRoomIdLobbyRoute
   GameRoomIdPlayRoute: typeof GameRoomIdPlayRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
+    '/_splash': {
+      id: '/_splash'
+      path: ''
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof SplashRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/game/create': {
-      id: '/game/create'
-      path: '/game/create'
-      fullPath: '/game/create'
-      preLoaderRoute: typeof GameCreateRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_splash/': {
+      id: '/_splash/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof SplashIndexRouteImport
+      parentRoute: typeof SplashRoute
     }
     '/game/$roomId/play': {
       id: '/game/$roomId/play'
@@ -104,12 +110,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GameRoomIdLobbyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_splash/game/create': {
+      id: '/_splash/game/create'
+      path: '/game/create'
+      fullPath: '/game/create'
+      preLoaderRoute: typeof SplashGameCreateRouteImport
+      parentRoute: typeof SplashRoute
+    }
   }
 }
 
+interface SplashRouteChildren {
+  SplashIndexRoute: typeof SplashIndexRoute
+  SplashGameCreateRoute: typeof SplashGameCreateRoute
+}
+
+const SplashRouteChildren: SplashRouteChildren = {
+  SplashIndexRoute: SplashIndexRoute,
+  SplashGameCreateRoute: SplashGameCreateRoute,
+}
+
+const SplashRouteWithChildren =
+  SplashRoute._addFileChildren(SplashRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  GameCreateRoute: GameCreateRoute,
+  SplashRoute: SplashRouteWithChildren,
   GameRoomIdLobbyRoute: GameRoomIdLobbyRoute,
   GameRoomIdPlayRoute: GameRoomIdPlayRoute,
 }

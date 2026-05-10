@@ -1,10 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/game/create")({
-  component: CreateGame,
-});
-
-function CreateGame() {
+const CreateGame = () => {
   const navigate = useNavigate();
 
   const handleCreate = () => {
@@ -13,7 +9,7 @@ function CreateGame() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-12">
+    <div className="flex flex-col items-center justify-center px-12">
       <h1 className="text-5xl mb-6">Create Game</h1>
       <p className="text-neutral-600 mb-10">Game settings will go here.</p>
       <button
@@ -25,4 +21,8 @@ function CreateGame() {
       </button>
     </div>
   );
-}
+};
+
+export const Route = createFileRoute("/_splash/game/create")({
+  component: CreateGame,
+});
