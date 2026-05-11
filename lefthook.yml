@@ -1,10 +1,17 @@
 pre-commit:
-  parallel: true
+  skip:
+    - merge
+    - rebase
+  piped: true
   jobs:
     - name: biome check
       glob: "*.{js,ts,jsx,tsx,json,jsonc}"
       run: bunx biome check --write --no-errors-on-unmatched --staged {staged_files}
       stage_fixed: true
+
+    - name: eslint
+      glob: "apps/web/**/*.{ts,tsx}"
+      run: bunx eslint {staged_files}
 
     - name: knip
       run: bunx knip
