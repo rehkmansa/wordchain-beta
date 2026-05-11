@@ -56,6 +56,8 @@ project-name/
 - Use Bun APIs where available (bun:sqlite, Bun.serve)
 - Error handling: let it crash for unrecoverable errors, handle gracefully for user-facing ones
 - No comments that describe what — only why
+- Path alias `~/*` → `apps/web/src/*` for frontend imports (configured in tsconfig + vite)
+- Every UI component lives in its own folder under `apps/web/src/ui/` and MUST have a sibling `preview.tsx` (default-exports `{ name, render }`). View all at `/preview` (dev only).
 
 ## Doc Maintenance
 
