@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PreviewRouteImport } from './routes/preview'
 import { Route as SplashRouteImport } from './routes/_splash'
 import { Route as SplashIndexRouteImport } from './routes/_splash/index'
 import { Route as GameRoomIdPlayRouteImport } from './routes/game/$roomId/play'
 import { Route as GameRoomIdLobbyRouteImport } from './routes/game/$roomId/lobby'
 import { Route as SplashGameCreateRouteImport } from './routes/_splash/game/create'
 
+const PreviewRoute = PreviewRouteImport.update({
+  id: '/preview',
+  path: '/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SplashRoute = SplashRouteImport.update({
   id: '/_splash',
   getParentRoute: () => rootRouteImport,
@@ -42,11 +48,13 @@ const SplashGameCreateRoute = SplashGameCreateRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof SplashIndexRoute
+  '/preview': typeof PreviewRoute
   '/game/create': typeof SplashGameCreateRoute
   '/game/$roomId/lobby': typeof GameRoomIdLobbyRoute
   '/game/$roomId/play': typeof GameRoomIdPlayRoute
 }
 export interface FileRoutesByTo {
+  '/preview': typeof PreviewRoute
   '/': typeof SplashIndexRoute
   '/game/create': typeof SplashGameCreateRoute
   '/game/$roomId/lobby': typeof GameRoomIdLobbyRoute
@@ -55,6 +63,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_splash': typeof SplashRouteWithChildren
+  '/preview': typeof PreviewRoute
   '/_splash/': typeof SplashIndexRoute
   '/_splash/game/create': typeof SplashGameCreateRoute
   '/game/$roomId/lobby': typeof GameRoomIdLobbyRoute
@@ -62,12 +71,23 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/game/create' | '/game/$roomId/lobby' | '/game/$roomId/play'
+  fullPaths:
+    | '/'
+    | '/preview'
+    | '/game/create'
+    | '/game/$roomId/lobby'
+    | '/game/$roomId/play'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/game/create' | '/game/$roomId/lobby' | '/game/$roomId/play'
+  to:
+    | '/preview'
+    | '/'
+    | '/game/create'
+    | '/game/$roomId/lobby'
+    | '/game/$roomId/play'
   id:
     | '__root__'
     | '/_splash'
+    | '/preview'
     | '/_splash/'
     | '/_splash/game/create'
     | '/game/$roomId/lobby'
@@ -76,12 +96,20 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   SplashRoute: typeof SplashRouteWithChildren
+  PreviewRoute: typeof PreviewRoute
   GameRoomIdLobbyRoute: typeof GameRoomIdLobbyRoute
   GameRoomIdPlayRoute: typeof GameRoomIdPlayRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/preview': {
+      id: '/preview'
+      path: '/preview'
+      fullPath: '/preview'
+      preLoaderRoute: typeof PreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_splash': {
       id: '/_splash'
       path: ''
@@ -135,6 +163,7 @@ const SplashRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   SplashRoute: SplashRouteWithChildren,
+  PreviewRoute: PreviewRoute,
   GameRoomIdLobbyRoute: GameRoomIdLobbyRoute,
   GameRoomIdPlayRoute: GameRoomIdPlayRoute,
 }
