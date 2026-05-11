@@ -5,6 +5,11 @@
 
   --color-brand-purple-500: #9c59fe;
   --color-brand-purple-600: #6f53fd;
+  --color-brand-purple-700: #8156fd;
+}
+
+@utility cursor-hand {
+  cursor: url("/src/assets/cursor-hand.svg") 14 4, pointer;
 }
 
 html {
