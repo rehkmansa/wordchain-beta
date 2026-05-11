@@ -12,6 +12,10 @@ declare module "@tanstack/react-router" {
   }
 }
 
+document.addEventListener("contextmenu", (event) => event.preventDefault());
+document.addEventListener("dragstart", (event) => event.preventDefault());
+document.addEventListener("gesturestart", (event) => event.preventDefault());
+
 const root = document.getElementById("root");
 if (!root) throw new Error("Root element not found");
 
