@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { StartScreenHeader } from "~/ui/start-screens/header/header";
 
 type Mode = "default" | "join";
 
@@ -9,7 +10,7 @@ const Landing = () => {
   const [code, setCode] = useState("");
 
   const isJoin = mode === "join";
-  const title = isJoin ? "Join Game" : "Word\nChains";
+  const title = isJoin ? "Join Game" : "Word Chains";
   const description = isJoin
     ? "Join a game by entering the code below"
     : "Relax, explore, and enjoy simple word puzzles at your own pace.";
@@ -21,10 +22,10 @@ const Landing = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center px-12">
-      <h1 className="text-5xl text-center whitespace-pre-line mb-6">{title}</h1>
-
-      <p className="text-center text-neutral-600 mb-10 max-w-sm">{description}</p>
+    <div className="flex flex-col items-center pt-25   px-12">
+      <div className="mb-10 max-w-100">
+        <StartScreenHeader title={title} desc={description} />
+      </div>
 
       {isJoin ? (
         <div className="flex flex-col gap-3 w-full max-w-sm">

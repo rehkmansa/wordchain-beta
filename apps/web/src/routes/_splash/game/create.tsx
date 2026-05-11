@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { StartScreenHeader } from "~/ui/start-screens/header/header";
 
 const CreateGame = () => {
   const navigate = useNavigate();
@@ -9,9 +10,10 @@ const CreateGame = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center px-12">
-      <h1 className="text-5xl mb-6">Create Game</h1>
-      <p className="text-neutral-600 mb-10">Game settings will go here.</p>
+    <div className="flex flex-col items-center px-12">
+      <div className="mb-10">
+        <StartScreenHeader title="Create Game" desc="Game settings will go here." />
+      </div>
       <button
         type="button"
         onClick={handleCreate}
