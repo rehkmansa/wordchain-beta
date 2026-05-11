@@ -2,6 +2,7 @@
   "name": "wordchain",
   "private": true,
   "version": "0.1.0",
+  "type": "module",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -13,13 +14,16 @@
     "build": "bun run --filter '*' build",
     "build:web": "bun run --filter web build",
     "typecheck": "bun run --filter '*' typecheck",
-    "lint": "biome lint .",
+    "lint:biome": "biome lint .",
+    "lint:eslint": "eslint .",
     "format": "biome format --write .",
     "check": "biome check --write .",
     "knip": "knip"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.9",
+    "@typescript-eslint/parser": "^8.59.2",
+    "eslint": "^10.3.0",
     "knip": "^6.1.0",
     "lefthook": "^2.1.4",
     "typescript": "^5.8.0"

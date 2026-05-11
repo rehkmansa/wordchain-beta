@@ -6,6 +6,9 @@
     "apps/web": {
       "entry": ["src/routes/**/*.tsx"]
     },
+    "packages/lint-rules": {
+      "entry": ["rules/**/*.mjs"]
+    },
     "packages/shared": {}
   },
   "ignoreDependencies": ["bun-types"]
