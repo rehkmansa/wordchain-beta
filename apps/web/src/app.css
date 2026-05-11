@@ -2,6 +2,7 @@
 
 @theme {
   --font-sans: "Fredoka", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Digitalt", "Fredoka", ui-sans-serif, system-ui, sans-serif;
 
   --color-brand-purple-500: #9c59fe;
   --color-brand-purple-600: #6f53fd;
