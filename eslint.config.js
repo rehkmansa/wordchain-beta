@@ -28,6 +28,7 @@ export default [
     plugins: { wordchain },
     rules: {
       "wordchain/tailwind-no-arbitrary-sizing-text": "error",
+      "wordchain/tailwind-no-arbitrary-color": "error",
     },
   },
 

@@ -16,6 +16,7 @@
  *   backend/   — Bun/Hono/server-only rules
  */
 
+import tailwindNoArbitraryColor from "./rules/web/tailwind-no-arbitrary-color.mjs";
 import tailwindNoArbitrarySizingText from "./rules/web/tailwind-no-arbitrary-sizing-text.mjs";
 
 /** @type {import("eslint").ESLint.Plugin} */
@@ -26,6 +27,7 @@ const plugin = {
   },
   rules: {
     "tailwind-no-arbitrary-sizing-text": tailwindNoArbitrarySizingText,
+    "tailwind-no-arbitrary-color": tailwindNoArbitraryColor,
   },
 };
 
