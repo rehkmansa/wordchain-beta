@@ -57,7 +57,9 @@ project-name/
 - Error handling: let it crash for unrecoverable errors, handle gracefully for user-facing ones
 - No comments that describe what — only why
 - Path alias `~/*` → `apps/web/src/*` for frontend imports (configured in tsconfig + vite)
-- Every UI component lives in its own folder under `apps/web/src/ui/` and MUST have a sibling `preview.tsx` (default-exports `{ name, render }`). View all at `/preview` (dev only).
+- UI components default to plain files (`ui/button.tsx`). Use a folder only when files share a parent identity / are consumed exclusively by that group (e.g. `ui/start-screens/`). Avoid premature folder structure.
+- Page routes are folder-mode with two siblings: `routes/<segment>/route.tsx` + `routes/<segment>/-page.tsx`. `route.tsx` handles URL/route concerns only (`createFileRoute(...)`, loaders, guards — no JSX) and stays lean. `-page.tsx` is the page component. Helpers used by the page live in `routes/<segment>/-components/` (created only when needed). TanStack ignores `-`-prefixed files/folders, so they're route-private. Layout files (`_<name>.tsx`) and `__root.tsx` remain flat. Enforced by `wordchain/page-route-folder-mode` + `wordchain/route-defs-only`.
+- All component previews live in a single manually-curated file `apps/web/src/ui/_preview.tsx`, rendered at `/preview` (dev only). Underscore prefix marks it as a non-component dev artifact.
 
 ## Doc Maintenance
 
