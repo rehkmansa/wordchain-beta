@@ -1,7 +1,7 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { StartScreenHeader } from "~/ui/start-screens/header/header";
+import { useNavigate } from "@tanstack/react-router";
+import { StartScreenHeader } from "~/ui/start-screens/header";
 
-const CreateGame = () => {
+export const Page = () => {
   const navigate = useNavigate();
 
   const handleCreate = () => {
@@ -17,14 +17,10 @@ const CreateGame = () => {
       <button
         type="button"
         onClick={handleCreate}
-        className="border border-neutral-300 rounded-full px-8 py-3 hover:bg-neutral-50"
+        className="rounded-full border border-grey-300 px-8 py-3 hover:bg-grey-300/10"
       >
         create room
       </button>
     </div>
   );
 };
-
-export const Route = createFileRoute("/_splash/game/create")({
-  component: CreateGame,
-});
