@@ -39,7 +39,9 @@
         "**/routes/__root.tsx",
         "**/routes/**/_*.tsx",
         "**/routes/**/$*.tsx",
-        "**/routes/**/$*/**"
+        "**/routes/**/$*/**",
+        "**/routes/**/-*.tsx",
+        "**/routes/**/-*/**"
       ],
       "linter": {
         "rules": {
