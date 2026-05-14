@@ -3,25 +3,32 @@ import path from "node:path";
 /**
  * Cross-feature import rule.
  *
- * A "feature" is the route folder that owns a `-components/` (or `-hooks/`,
- * `-lib/`, `-types/`) directory. Files inside a feature's private folder may
- * only be imported by code that lives inside the same feature root.
+ * A "feature" is a route folder that contains route-private items, identified
+ * by any path segment prefixed with `-` (TanStack file router treats `-`
+ * prefixes as ignored/private). The feature root is the route folder that
+ * directly contains the `-` segment. Private items may only be imported from
+ * inside the same feature root.
  *
- * Allowed importers of `routes/A/-components/...`:
+ * Private segments include both folders and files, e.g.:
+ *   - `routes/A/-components/...` (private folder)
+ *   - `routes/A/-page.tsx`       (private file)
+ *   - `routes/A/-hooks/...`
+ *
+ * Allowed importers of any `routes/A/-*`:
  *   - any file inside `routes/A/**`
  *
  * Forbidden:
- *   - importing `routes/A/-components/...` from `routes/B/**`
- *   - importing `routes/A/-components/...` from any `apps/web/src/<other-tree>/**`
+ *   - importing `routes/A/-*` from `routes/B/**`
+ *   - importing `routes/A/-*` from any `apps/web/src/<other-tree>/**`
  *
  * Shared code that needs to be reused across features must live outside
  * `routes/`, in e.g. `apps/web/src/ui/`, `apps/web/src/lib/`, `apps/web/src/hooks/`.
  */
 
-const PRIVATE_SEGMENT_RE = /\/-(components|hooks|lib|types|utils|assets)(\/|$)/;
+const PRIVATE_SEGMENT_RE = /\/routes\/.+?\/-[^/]+/;
 
 const featureRootOf = (absPath) => {
-  const match = absPath.match(/^(.*\/routes\/.+?)\/-(?:components|hooks|lib|types|utils|assets)(?:\/|$)/);
+  const match = absPath.match(/^(.*\/routes\/.+?)\/-[^/]+/);
   return match ? match[1] : null;
 };
 

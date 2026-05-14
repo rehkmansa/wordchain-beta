@@ -22,6 +22,8 @@ import noDeepRelativeImport from "./rules/universal/no-deep-relative-import.mjs"
 import classNameUseCn from "./rules/web/classname-use-cn.mjs";
 import noCrossFeatureImport from "./rules/web/no-cross-feature-import.mjs";
 import noInlineStyle from "./rules/web/no-inline-style.mjs";
+import pageRouteFolderMode from "./rules/web/page-route-folder-mode.mjs";
+import routeDefsOnly from "./rules/web/route-defs-only.mjs";
 import tailwindNoArbitraryColor from "./rules/web/tailwind-no-arbitrary-color.mjs";
 import tailwindNoArbitrarySizingText from "./rules/web/tailwind-no-arbitrary-sizing-text.mjs";
 
@@ -39,6 +41,8 @@ const plugin = {
     "no-deep-feature-import": noDeepFeatureImport,
     "classname-use-cn": classNameUseCn,
     "no-inline-style": noInlineStyle,
+    "page-route-folder-mode": pageRouteFolderMode,
+    "route-defs-only": routeDefsOnly,
     "eslint-disable-needs-reason": eslintDisableNeedsReason,
   },
 };

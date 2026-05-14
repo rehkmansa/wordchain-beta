@@ -37,6 +37,8 @@ export default [
       "wordchain/no-cross-feature-import": "error",
       "wordchain/classname-use-cn": "error",
       "wordchain/no-inline-style": "error",
+      "wordchain/page-route-folder-mode": "error",
+      "wordchain/route-defs-only": "error",
     },
   },
 
