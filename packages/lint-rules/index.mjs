@@ -16,6 +16,7 @@
  *   backend/   — Bun/Hono/server-only rules
  */
 
+import noDeepFeatureImport from "./rules/universal/no-deep-feature-import.mjs";
 import noDeepRelativeImport from "./rules/universal/no-deep-relative-import.mjs";
 import tailwindNoArbitraryColor from "./rules/web/tailwind-no-arbitrary-color.mjs";
 import tailwindNoArbitrarySizingText from "./rules/web/tailwind-no-arbitrary-sizing-text.mjs";
@@ -30,6 +31,7 @@ const plugin = {
     "no-deep-relative-import": noDeepRelativeImport,
     "tailwind-no-arbitrary-sizing-text": tailwindNoArbitrarySizingText,
     "tailwind-no-arbitrary-color": tailwindNoArbitraryColor,
+    "no-deep-feature-import": noDeepFeatureImport,
   },
 };
 
