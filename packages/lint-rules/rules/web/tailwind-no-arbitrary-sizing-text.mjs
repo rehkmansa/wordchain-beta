@@ -36,10 +36,6 @@ const BANNED_PREFIXES = [
   "inset",
   "inset-x",
   "inset-y",
-  "text",
-  "leading",
-  "tracking",
-  "font",
 ];
 
 const ARBITRARY_RE = new RegExp(
@@ -66,11 +62,11 @@ const noArbitrarySizingText = {
     type: "problem",
     docs: {
       description:
-        "Disallow Tailwind arbitrary values for sizing, spacing, positioning, and text utilities. Use theme tokens or the spacing scale (e.g. `h-9.5`).",
+        "Disallow Tailwind arbitrary values for sizing, spacing, and positioning utilities (they multiply the spacing scale — `w-10` rather than `w-[40px]`). Typography prefixes (text, leading, tracking, font) are NOT included — they have no spacing scale so arbitrary values are fine there.",
     },
     messages: {
       noArbitrary:
-        "`{{match}}` uses an arbitrary Tailwind value. Use a theme token or the spacing scale (e.g. `h-9.5`) instead.",
+        "`{{match}}` uses an arbitrary Tailwind value for a spacing-scale utility. Use the scale (e.g. `h-10` for 40px) or a theme token.",
     },
     schema: [],
   },
