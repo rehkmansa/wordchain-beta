@@ -42,11 +42,20 @@ export const StartButton = ({
       >
         <div
           className={cn(
-            "flex h-16 items-center justify-center rounded-2xl border bg-white",
+            "relative flex h-16 items-center justify-center overflow-hidden rounded-2xl border bg-white",
             border,
           )}
         >
-          <span className="font-sans font-semibold uppercase text-grey-800 text-[18px] leading-5.5 tracking-[-0.02em]">
+          <span
+            aria-hidden
+            className={cn(
+              "pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-150",
+              "group-active:opacity-100",
+              accent === "purple" && "bg-linear-to-b from-brand-purple-500/15 to-transparent",
+              accent === "gold" && "bg-linear-to-b from-brand-yellow-500/25 to-transparent",
+            )}
+          />
+          <span className="relative font-sans font-semibold uppercase text-grey-800 text-[18px] leading-5.5 tracking-[-0.02em]">
             {children}
           </span>
         </div>
