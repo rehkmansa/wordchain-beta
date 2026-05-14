@@ -1,3 +1,5 @@
+import { cn } from "~/lib/utils";
+
 type Variant = "gold" | "purple";
 
 type LogoWordProps = {
@@ -48,7 +50,7 @@ const LogoWord = ({ text, size, lineHeight, variant }: LogoWordProps) => {
         {text}
       </span>
       <span
-        className={`absolute inset-x-0 text-center uppercase ${solid}`}
+        className={cn("absolute inset-x-0 text-center uppercase", solid)}
         style={{ ...fontStyle, top: 0 }}
       >
         {text}

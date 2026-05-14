@@ -18,6 +18,7 @@
 
 import noDeepFeatureImport from "./rules/universal/no-deep-feature-import.mjs";
 import noDeepRelativeImport from "./rules/universal/no-deep-relative-import.mjs";
+import classNameUseCn from "./rules/web/classname-use-cn.mjs";
 import noCrossFeatureImport from "./rules/web/no-cross-feature-import.mjs";
 import tailwindNoArbitraryColor from "./rules/web/tailwind-no-arbitrary-color.mjs";
 import tailwindNoArbitrarySizingText from "./rules/web/tailwind-no-arbitrary-sizing-text.mjs";
@@ -34,6 +35,7 @@ const plugin = {
     "tailwind-no-arbitrary-color": tailwindNoArbitraryColor,
     "no-cross-feature-import": noCrossFeatureImport,
     "no-deep-feature-import": noDeepFeatureImport,
+    "classname-use-cn": classNameUseCn,
   },
 };
 

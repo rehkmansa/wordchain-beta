@@ -34,6 +34,7 @@ export default [
       "wordchain/tailwind-no-arbitrary-sizing-text": "error",
       "wordchain/tailwind-no-arbitrary-color": "error",
       "wordchain/no-cross-feature-import": "error",
+      "wordchain/classname-use-cn": "error",
     },
   },
 

@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { cn } from "~/lib/utils";
 
 type LetterTileProps = {
   letter: string;
@@ -9,11 +10,11 @@ export const LetterTile = ({ letter, isLifted }: LetterTileProps) => {
   return (
     <div className="relative h-20 w-20">
       <div
-        className={
-          isLifted
-            ? "h-full w-full rounded-xl border border-dashed border-white bg-white/5"
-            : "h-full w-full rounded-xl bg-white/8 flex items-center justify-center text-2xl text-white"
-        }
+        className={cn(
+          "h-full w-full rounded-xl",
+          isLifted && "border border-dashed border-white bg-white/5",
+          !isLifted && "bg-white/8 flex items-center justify-center text-2xl text-white",
+        )}
       >
         {!isLifted && letter}
       </div>
