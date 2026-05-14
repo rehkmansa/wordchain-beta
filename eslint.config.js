@@ -30,6 +30,7 @@ export default [
     languageOptions: tsParserConfig,
     plugins: { wordchain },
     rules: {
+      "max-lines": ["error", { max: 600, skipBlankLines: true, skipComments: true }],
       "wordchain/tailwind-no-arbitrary-sizing-text": "error",
       "wordchain/tailwind-no-arbitrary-color": "error",
       "wordchain/no-cross-feature-import": "error",
