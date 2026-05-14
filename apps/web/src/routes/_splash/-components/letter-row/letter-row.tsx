@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import cursorHand from "../../../../assets/cursor-hand.svg";
+import cursorHand from "~/assets/cursor-hand.svg";
 import { LetterTile } from "./letter-tile";
 
 const LETTERS = [
@@ -69,7 +69,7 @@ export const LetterRow = () => {
         src={cursorHand}
         alt=""
         aria-hidden
-        className="pointer-events-none absolute top-0 left-0 h-[38px] w-[38px]"
+        className="pointer-events-none absolute top-0 left-0 h-9.5 w-9.5"
         animate={animate}
         transition={transition}
       />
