@@ -19,7 +19,9 @@ export default [
     files: ["apps/**/*.{ts,tsx}", "packages/**/*.{ts,tsx}"],
     languageOptions: tsParserConfig,
     plugins: { wordchain },
-    rules: {},
+    rules: {
+      "wordchain/no-deep-relative-import": "error",
+    },
   },
 
   {
