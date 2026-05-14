@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { StartScreenHeader } from "~/ui/start-screens/header/header";
+import { StartButton } from "~/ui/start-screens/start-button/start-button";
 
 type Mode = "default" | "join";
 
@@ -28,21 +29,17 @@ const Landing = () => {
       </div>
 
       {isJoin ? (
-        <div className="flex flex-col gap-3 w-full max-w-sm">
+        <div className="flex flex-col gap-4 w-full max-w-md">
           <input
             type="text"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             placeholder="Enter room code"
-            className="border border-neutral-300 rounded-full px-5 py-3 text-center focus:outline-none focus:border-neutral-500"
+            className="border border-neutral-300 rounded-2xl px-5 py-3 text-center focus:outline-none focus:border-neutral-500"
           />
-          <button
-            type="button"
-            onClick={handleJoin}
-            className="border border-neutral-300 rounded-full px-5 py-3 hover:bg-neutral-50"
-          >
-            join room
-          </button>
+          <StartButton accent="gold" onClick={handleJoin}>
+            Join Room
+          </StartButton>
           <button
             type="button"
             onClick={() => {
@@ -55,21 +52,13 @@ const Landing = () => {
           </button>
         </div>
       ) : (
-        <div className="flex flex-col gap-3 w-full max-w-sm">
-          <button
-            type="button"
-            onClick={() => navigate({ to: "/game/create" })}
-            className="border border-neutral-300 rounded-full px-5 py-3 hover:bg-neutral-50"
-          >
-            create
-          </button>
-          <button
-            type="button"
-            onClick={() => setMode("join")}
-            className="border border-neutral-300 rounded-full px-5 py-3 hover:bg-neutral-50"
-          >
-            join
-          </button>
+        <div className="flex flex-col gap-4 w-full max-w-md">
+          <StartButton accent="purple" onClick={() => navigate({ to: "/game/create" })}>
+            Create Room
+          </StartButton>
+          <StartButton accent="gold" onClick={() => setMode("join")}>
+            Join Room
+          </StartButton>
         </div>
       )}
     </div>

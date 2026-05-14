@@ -8,6 +8,8 @@
   --color-brand-purple-600: #6f53fd;
   --color-brand-purple-700: #8156fd;
 
+  --color-brand-yellow-500: #fddb6d;
+
   --color-logo-gold: #fdcd6d;
   --color-logo-gold-grad-from: #e88c03;
   --color-logo-gold-grad-to: #ffbe2d;
@@ -16,6 +18,8 @@
   --color-logo-purple-grad-to: #a17cff;
 
   --color-grey-400: #808897;
+  --color-grey-700: #272835;
+  --color-grey-800: #15161e;
 }
 
 @utility cursor-hand {
