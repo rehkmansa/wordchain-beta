@@ -16,6 +16,7 @@
  *   backend/   — Bun/Hono/server-only rules
  */
 
+import eslintDisableNeedsReason from "./rules/universal/eslint-disable-needs-reason.mjs";
 import noDeepFeatureImport from "./rules/universal/no-deep-feature-import.mjs";
 import noDeepRelativeImport from "./rules/universal/no-deep-relative-import.mjs";
 import classNameUseCn from "./rules/web/classname-use-cn.mjs";
@@ -38,6 +39,7 @@ const plugin = {
     "no-deep-feature-import": noDeepFeatureImport,
     "classname-use-cn": classNameUseCn,
     "no-inline-style": noInlineStyle,
+    "eslint-disable-needs-reason": eslintDisableNeedsReason,
   },
 };
 

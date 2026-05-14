@@ -22,6 +22,7 @@ export default [
     rules: {
       "wordchain/no-deep-relative-import": "error",
       "wordchain/no-deep-feature-import": "error",
+      "wordchain/eslint-disable-needs-reason": "error",
     },
   },
 
