@@ -7,6 +7,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "better-auth": "^1.6.11",
     "hono": "^4.7.0"
   },
   "devDependencies": {
