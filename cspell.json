@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "wordchain",
+    "bigram",
+    "bigrams",
+    "ngrams",
+    "datamuse",
+    "rehkmansa",
+    "hono",
+    "kysely",
+    "sqlite",
+    "tanstack"
+  ],
+  "ignorePaths": ["node_modules", "dist", "bun.lockb", "**/*.db", "**/*.db-shm", "**/*.db-wal"]
+}
