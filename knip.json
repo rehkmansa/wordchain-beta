@@ -2,7 +2,10 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
     ".": {},
-    "apps/backend": {},
+    "apps/backend": {
+      "entry": ["src/index.ts", "scripts/*.ts"],
+      "ignore": ["src/corpus/sampler.ts"]
+    },
     "apps/web": {
       "entry": ["src/routes/**/*.tsx"]
     },

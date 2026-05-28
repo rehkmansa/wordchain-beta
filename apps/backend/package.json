@@ -4,13 +4,19 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "bun run --watch src/index.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "corpus:generate": "bun run scripts/corpus-generate.ts",
+    "corpus:import": "bun run scripts/corpus-import.ts"
   },
   "dependencies": {
+    "@repo/shared": "workspace:*",
     "better-auth": "^1.6.11",
-    "hono": "^4.7.0"
+    "hono": "^4.7.0",
+    "openai": "^6.37.0",
+    "pluralize": "^8.0.0"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/pluralize": "^0.0.33"
   }
 }
