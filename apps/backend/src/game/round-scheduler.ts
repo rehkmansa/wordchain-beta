@@ -85,6 +85,7 @@ function startRound(room: Room, idx: number): void {
     endTimer: null,
     nextTimer: null,
     perPlayer,
+    roundStartSent: new Set(),
   };
   room.currentRound = round;
 
@@ -111,6 +112,7 @@ function startRound(room: Room, idx: number): void {
         livesLeft: p.livesLeft,
       },
     });
+    round.roundStartSent.add(p.id);
   }
 
   // Schedule AI submission if there's an AI player in this room.
@@ -282,26 +284,20 @@ function finalizeRound(room: Room): void {
     });
   }
 
-  // Persist round outcome for replay
-  db.run(
-    "INSERT INTO game_rounds (id, game_id, round_index, pair_id, hidden_side, outcomes) VALUES (?, ?, ?, ?, ?, ?)",
-    [
-      newId(),
-      room.gameId,
-      round.roundIndex,
-      round.pairId,
-      round.visibleSide === "left" ? "right" : "left",
-      JSON.stringify(
-        perPlayer.map((p) => ({
-          playerId: p.playerId,
-          correct: p.correct,
-          lockedAt: p.lockedAt,
-          roundScore: p.roundScore,
-          hintsUsed: p.hintsUsed,
-        })),
-      ),
-    ],
-  );
+  // Buffer round outcome — actual game_rounds rows are written in the
+  // game_over transaction (which creates the parent games row first).
+  room.finishedRounds.push({
+    roundIndex: round.roundIndex,
+    pairId: round.pairId,
+    hiddenSide: round.visibleSide === "left" ? "right" : "left",
+    outcomes: perPlayer.map((p) => ({
+      playerId: p.playerId,
+      correct: p.correct,
+      lockedAt: p.lockedAt,
+      roundScore: p.roundScore,
+      hintsUsed: p.hintsUsed,
+    })),
+  });
 
   const aliveCount = countActive(room);
   const isLastRound = round.roundIndex + 1 >= room.roundQueue.length;
@@ -393,6 +389,19 @@ export function endGame(room: Room, outcome: "completed" | "abandoned"): void {
         ],
       );
     }
+    for (const rec of room.finishedRounds) {
+      db.run(
+        "INSERT INTO game_rounds (id, game_id, round_index, pair_id, hidden_side, outcomes) VALUES (?, ?, ?, ?, ?, ?)",
+        [
+          newId(),
+          room.gameId,
+          rec.roundIndex,
+          rec.pairId,
+          rec.hiddenSide,
+          JSON.stringify(rec.outcomes),
+        ],
+      );
+    }
     deleteSnapshot(room.code);
   });
   tx();
@@ -403,14 +412,10 @@ export function endGame(room: Room, outcome: "completed" | "abandoned"): void {
   markCodeRecycled(room.code);
 }
 
-function countSolvesFor(_room: Room, playerId: string): number {
-  const row = db
-    .query<{ n: number }, [string, string]>(
-      `SELECT COUNT(*) as n
-       FROM game_rounds
-       WHERE game_id = ?
-         AND json_extract(outcomes, '$') LIKE '%' || ? || '%' AND outcomes LIKE '%"correct":true%'`,
-    )
-    .get(_room.gameId, playerId);
-  return row?.n ?? 0;
+function countSolvesFor(room: Room, playerId: string): number {
+  let n = 0;
+  for (const rec of room.finishedRounds) {
+    if (rec.outcomes.some((o) => o.playerId === playerId && o.correct)) n += 1;
+  }
+  return n;
 }

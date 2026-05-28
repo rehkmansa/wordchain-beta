@@ -101,10 +101,11 @@ export const websocketHandlers = {
       }
 
       // Re-send current round state on reconnect to anyone mid-game.
+      // Skip if startRound already pushed this round to the player (dedupe).
       if (room.status === "playing" && room.currentRound) {
         const r = room.currentRound;
         const player = room.players.get(ws.data.userId);
-        if (player && !player.isAi) {
+        if (player && !player.isAi && !r.roundStartSent.has(ws.data.userId)) {
           const hidden = r.hiddenWord;
           ws.send(
             JSON.stringify({
@@ -130,6 +131,7 @@ export const websocketHandlers = {
               },
             }),
           );
+          r.roundStartSent.add(ws.data.userId);
         }
       }
     })();

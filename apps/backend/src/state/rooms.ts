@@ -13,6 +13,20 @@ export type RoundState = {
   endTimer: ReturnType<typeof setTimeout> | null;
   nextTimer: ReturnType<typeof setTimeout> | null;
   perPlayer: Map<string, RoundPlayerState>;
+  roundStartSent: Set<string>;
+};
+
+export type FinishedRoundRecord = {
+  roundIndex: number;
+  pairId: string;
+  hiddenSide: "left" | "right";
+  outcomes: Array<{
+    playerId: string;
+    correct: boolean;
+    lockedAt: number | null;
+    roundScore: number;
+    hintsUsed: number;
+  }>;
 };
 
 export type RoundPlayerState = {
@@ -49,6 +63,7 @@ export type Room = {
   settings: GameSettings;
   players: Map<string, PlayerState>;
   roundQueue: string[];
+  finishedRounds: FinishedRoundRecord[];
   currentRound: RoundState | null;
   startedAt: number | null;
   createdAt: number;

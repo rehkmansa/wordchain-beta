@@ -98,6 +98,7 @@ roomsRouter.post("/", async (c) => {
       ],
     ]),
     roundQueue: [],
+    finishedRounds: [],
     currentRound: null,
     startedAt: null,
     createdAt: Date.now(),

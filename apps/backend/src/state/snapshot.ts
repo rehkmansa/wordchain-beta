@@ -73,6 +73,7 @@ export function loadSnapshot(roomCode: string): Room | null {
     settings: JSON.parse(row.settings),
     players,
     roundQueue: JSON.parse(row.round_queue) as string[],
+    finishedRounds: [],
     currentRound: null,
     startedAt: row.updated_at,
     createdAt: row.updated_at,
