@@ -1,0 +1,128 @@
+[
+  {
+    "a": "fire",
+    "b": "truck",
+    "category": "compound nouns",
+    "example_usage": "The fire truck rushed to the scene."
+  },
+  {
+    "a": "Harry",
+    "b": "Potter",
+    "category": "famous fictional character names",
+    "example_usage": "Harry Potter is a wizard at Hogwarts."
+  },
+  {
+    "a": "Hot",
+    "b": "Wheels",
+    "category": "well-known brands or products",
+    "example_usage": "Kids love collecting Hot Wheels cars."
+  },
+  {
+    "a": "apple",
+    "b": "pie",
+    "category": "food and dishes",
+    "example_usage": "She baked a delicious apple pie."
+  },
+  {
+    "a": "Times",
+    "b": "Square",
+    "category": "places and landmarks",
+    "example_usage": "We visited Times Square on our trip."
+  },
+  {
+    "a": "dark",
+    "b": "horse",
+    "category": "common idioms or phrases",
+    "example_usage": "He was a dark horse in the competition."
+  },
+  {
+    "a": "Breaking",
+    "b": "Bad",
+    "category": "movie/show titles",
+    "example_usage": "Breaking Bad is a critically acclaimed series."
+  },
+  {
+    "a": "home",
+    "b": "run",
+    "category": "sports terms",
+    "example_usage": "He hit a home run to win the game."
+  },
+  {
+    "a": "rain",
+    "b": "coat",
+    "category": "compound nouns",
+    "example_usage": "Make sure to wear a rain coat."
+  },
+  {
+    "a": "Sherlock",
+    "b": "Holmes",
+    "category": "famous fictional character names",
+    "example_usage": "Sherlock Holmes solved the mystery."
+  },
+  {
+    "a": "Coca",
+    "b": "Cola",
+    "category": "well-known brands or products",
+    "example_usage": "Coca Cola is known for its refreshing taste."
+  },
+  {
+    "a": "sushi",
+    "b": "roll",
+    "category": "food and dishes",
+    "example_usage": "I love ordering a spicy tuna sushi roll."
+  },
+  {
+    "a": "Eiffel",
+    "b": "Tower",
+    "category": "places and landmarks",
+    "example_usage": "The Eiffel Tower is in Paris."
+  },
+  {
+    "a": "silver",
+    "b": "lining",
+    "category": "common idioms or phrases",
+    "example_usage": "Every cloud has a silver lining."
+  },
+  {
+    "a": "Jurassic",
+    "b": "Park",
+    "category": "movie/show titles",
+    "example_usage": "Jurassic Park is a popular movie franchise."
+  },
+  {
+    "a": "free",
+    "b": "throw",
+    "category": "sports terms",
+    "example_usage": "He made the free throw to tie the game."
+  },
+  {
+    "a": "tooth",
+    "b": "brush",
+    "category": "compound nouns",
+    "example_usage": "You need a good tooth brush for dental health."
+  },
+  {
+    "a": "Luke",
+    "b": "Skywalker",
+    "category": "famous fictional character names",
+    "example_usage": "Luke Skywalker is a Jedi in Star Wars."
+  },
+  {
+    "a": "Nike",
+    "b": "Air",
+    "category": "well-known brands or products",
+    "example_usage": "I bought a new pair of Nike Air sneakers."
+  },
+  {
+    "a": "chicken",
+    "b": "curry",
+    "category": "food and dishes",
+    "example_usage": "We had chicken curry for dinner."
+  },
+  {
+    "a": "Grand",
+    "b": "Canyon",
+    "category": "places and landmarks",
+    "example_usage": "The Grand Canyon is breathtaking to see."
+  }
+]
