@@ -181,7 +181,7 @@ function maybeEndIfTooFew(room: Room): void {
   if (room.status !== "playing") return;
   let active = 0;
   for (const p of room.players.values()) {
-    if (p.eliminatedAt === null && !p.disconnected) active += 1;
+    if (!p.isAi && p.eliminatedAt === null && !p.disconnected) active += 1;
   }
   if (active < minPlayersFor(room.mode)) {
     endGame(room, "abandoned");

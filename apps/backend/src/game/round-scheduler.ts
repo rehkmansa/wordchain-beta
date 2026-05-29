@@ -330,10 +330,13 @@ function finalizeRound(room: Room): void {
   }, INTERLUDE_MS);
 }
 
+// Counts only non-AI players. A game where the only "active" entrant is an AI
+// opponent isn't a game — kill it so solo + elimination doesn't have the AI
+// playing solitaire after the human is out.
 function countActive(room: Room): number {
   let n = 0;
   for (const p of room.players.values()) {
-    if (p.eliminatedAt === null && !p.disconnected) n += 1;
+    if (!p.isAi && p.eliminatedAt === null && !p.disconnected) n += 1;
   }
   return n;
 }
