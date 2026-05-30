@@ -11,4 +11,14 @@ export default defineConfig({
       "~": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  // Same-origin proxy so cookie auth + the WS upgrade reach the backend without CORS.
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+        ws: true,
+      },
+    },
+  },
 });
