@@ -66,7 +66,8 @@ function startRound(room: Room, idx: number): void {
       correct: false,
       lockedAt: null,
       roundScore: 0,
-      revealedIndexes: [],
+      // Index 0 is shown free as hiddenFirstChar on the client; seed it so the first paid hint reveals index 1.
+      revealedIndexes: [0],
       hintsUsed: 0,
       hintCooldownUntil: 0,
       streakBrokenThisRound: false,
