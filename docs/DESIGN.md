@@ -26,7 +26,7 @@ Every round, all players receive the **same compound word puzzle simultaneously*
 |---|---|---|
 | Solo | Player vs AI | Ship |
 | Dual | 2 players | Ship |
-| Group | N players | Ship |
+| Group | N players (2–unlimited) | Ship |
 | Multiplayer | Shared link join flow | Future |
 
 All modes run the same core mechanic. Mode only changes player count and which optional rules apply.
@@ -38,6 +38,8 @@ All modes run the same core mechanic. Mode only changes player count and which o
 - Chain length = number of rounds (10 links = 10 rounds)
 - All players receive the same puzzle simultaneously each round
 - Rounds are fully independent — no word carries over
+- Each puzzle is a two-word compound; the hidden side is **randomized per round** — you see one word and complete the other. The first hidden character is always revealed.
+- **One submission per round.** A wrong answer locks you for the round (0 pts). A near-miss (single typo) is rejected with a retry prompt and does **not** lock.
 
 ---
 
@@ -52,7 +54,7 @@ round_score = base_points × speed_weight × streak_multiplier
 | `base_points` | Fixed per round, set at game level |
 | `speed_weight` | Sliding scale. Solve instantly = near full base. Solve at last second = near 0 |
 | `streak_multiplier` | Ongoing multiplier from streak. Starts at 1x, caps at 2x |
-| `accumulated_points` | Running total across rounds. Hint usage drains this bank |
+| `accumulated_points` | The player's single running `score` — also the bank hint usage drains. There is no separate pool |
 
 ---
 
@@ -152,7 +154,7 @@ Minimal by design. Sensible defaults, few toggles.
 | Setting | Options | Default |
 |---|---|---|
 | Round timer | 10s / 15s / 20s / 30s / 60s | 15s |
-| Chain length | Host sets | 10 |
+| Chain length | Host sets (3–20) | 10 |
 | Elimination | On / Off | Off |
 | Lives | Host sets (if elimination on) | 3 |
 

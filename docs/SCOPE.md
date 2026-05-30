@@ -7,7 +7,7 @@
 **Game modes**
 - **Solo** — 1 human + 1 procedural AI opponent. Starts immediately on create, no lobby.
 - **Dual** — 2 humans. Auto-starts when 2nd player joins.
-- **Group** — N humans (2–8). Host clicks "Start" when ready.
+- **Group** — N humans (2–unlimited). Host clicks "Start" when ready. UI shows count/top-N/sampled; per-room broadcast scaling deferred (see Out of Scope).
 
 **Game mechanics** (per [DESIGN.md](./DESIGN.md))
 - Simultaneous round-based puzzle play
@@ -18,6 +18,12 @@
 - Optional elimination (lives, host-configurable)
 - Chain length (round count) configurable, default 10
 - Round timer configurable: 10s / 15s / 20s / 30s / 60s, default 15s
+
+**Feel / polish**
+- Shareable invite link (`/join/<code>`) that authenticates + auto-joins the waiting room
+- Live display-name editing in the lobby (debounced, broadcast to all players)
+- Procedural sound effects (correct / wrong / hint / round start / opponent lock / streak-up / streak-max / streak-break / win / lose) with a persisted mute toggle in the play HUD
+- Visual + haptic feedback off a shared feedback bus: streak flame-burst + glow on the HUD pill, screen-shake on miss / streak-break, win confetti on the standings screen, vibration patterns (mute-gated)
 
 **Auth**
 - Anonymous accounts (auto-created on first visit, cookie-backed)
