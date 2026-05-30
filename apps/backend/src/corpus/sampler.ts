@@ -3,7 +3,7 @@ import type { FreqTier } from "./types";
 
 export type TierWeights = Record<FreqTier, number>;
 
-const DEFAULT_WEIGHTS: TierWeights = { common: 0.5, normal: 0.35, rare: 0.15 };
+const DEFAULT_WEIGHTS: TierWeights = { common: 0.3, normal: 0.4, rare: 0.3 };
 
 // Returns `count` distinct validated pair IDs. Distribution across tiers
 // follows the provided weights. Falls back to whatever tiers are available

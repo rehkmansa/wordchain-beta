@@ -11,6 +11,7 @@ export type FreqResult = {
   datamuse: boolean;
   wikipediaExact: boolean;
   wikipediaPartial: boolean;
+  freq: number | null;
   score: number;
   tier: FreqTier | null;
 };

@@ -17,7 +17,7 @@ import { migrate } from "../src/db/migrate";
 import { newId } from "../src/lib/ids";
 
 const SEED_PATH = join(import.meta.dir, "..", "data", "seed-candidates.json");
-const CONCURRENCY = 5;
+const CONCURRENCY = 16;
 
 type ImportStats = {
   total: number;
@@ -120,7 +120,7 @@ async function main(): Promise<void> {
             JSON.stringify({ category: c.category, example_usage: c.example_usage }),
             status,
             JSON.stringify(gate),
-            gate.tier ? null : "freq_gate_score_zero",
+            gate.tier ? null : "freq_gate_no_real_signal",
             now,
             now,
           ],
