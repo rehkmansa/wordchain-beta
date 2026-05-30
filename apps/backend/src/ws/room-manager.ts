@@ -1,9 +1,12 @@
 import { ERROR_CODES } from "@repo/shared";
+import { db } from "../db";
 import { AI_NICKNAME, AI_USER_ID } from "../game/ai-player";
 import { endGame, startGame } from "../game/round-scheduler";
 import { maxPlayersFor, minPlayersFor, type PlayerState, type Room, rooms } from "../state/rooms";
 import { broadcastRoomState, send } from "./broadcast";
 import { connectionFor, connectionsFor, unregister } from "./connections";
+
+const NICKNAME_MAX = 20;
 
 const DISCONNECT_GRACE_MS = 60_000;
 const IDLE_SWEEP_INTERVAL_MS = 60_000;
@@ -62,6 +65,22 @@ export async function joinRoom(room: Room, userId: string, nickname: string): Pr
   maybeAutoStartDual(room);
 }
 
+export function setNickname(room: Room, userId: string, raw: string): void {
+  const nickname = raw.trim().slice(0, NICKNAME_MAX);
+  if (!nickname) return;
+  const player = room.players.get(userId);
+  if (!player || player.isAi || player.nickname === nickname) return;
+  player.nickname = nickname;
+  // Persist: nickname is the better-auth user.name, re-read from the DB on every
+  // WS (re)connect, so it must survive into future rooms.
+  db.query("UPDATE users SET nickname = ?, updated_at = ? WHERE id = ?").run(
+    nickname,
+    Date.now(),
+    userId,
+  );
+  broadcastRoomState(room);
+}
+
 export async function leaveRoom(room: Room, userId: string): Promise<void> {
   await room.mutex.run(() => {
     if (userId === room.hostId && room.status === "waiting") {
@@ -89,28 +108,30 @@ export async function handleDisconnect(roomCode: string, userId: string): Promis
     if (!player) return;
     player.disconnected = true;
 
-    if (room.status === "waiting") {
-      if (userId === room.hostId) {
-        endGameAbandoned(room);
-        return;
-      }
-      room.players.delete(userId);
-    } else if (room.status === "playing") {
-      // Schedule abandonment if not reconnected.
-      const key = disconnectKey(roomCode, userId);
-      const existing = disconnectTimers.get(key);
-      if (existing) clearTimeout(existing);
-      const t = setTimeout(() => {
-        void room.mutex.run(() => {
-          const p = room.players.get(userId);
-          if (p?.disconnected && p.eliminatedAt === null) p.eliminatedAt = Date.now();
-          disconnectTimers.delete(key);
+    // Grace period so a reload / tab-switch / transient drop doesn't tear the
+    // room down. Reconnecting (joinRoom) clears this timer before it fires.
+    const key = disconnectKey(roomCode, userId);
+    const existing = disconnectTimers.get(key);
+    if (existing) clearTimeout(existing);
+    const t = setTimeout(() => {
+      void room.mutex.run(() => {
+        disconnectTimers.delete(key);
+        const p = room.players.get(userId);
+        if (!p?.disconnected) return; // reconnected in time
+        if (room.status === "waiting") {
+          if (userId === room.hostId) {
+            endGameAbandoned(room);
+            return;
+          }
+          room.players.delete(userId);
+          broadcastRoomState(room);
+        } else if (room.status === "playing") {
+          if (p.eliminatedAt === null) p.eliminatedAt = Date.now();
           maybeEndIfTooFew(room);
-        });
-      }, DISCONNECT_GRACE_MS);
-      disconnectTimers.delete(key);
-      disconnectTimers.set(key, t);
-    }
+        }
+      });
+    }, DISCONNECT_GRACE_MS);
+    disconnectTimers.set(key, t);
   });
   broadcastRoomState(room);
 }

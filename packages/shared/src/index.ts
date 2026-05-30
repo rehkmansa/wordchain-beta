@@ -180,13 +180,16 @@ export type RequestHintMsg = {
 
 export type LeaveRoomMsg = { type: "leave_room" };
 
+export type SetNicknameMsg = { type: "set_nickname"; nickname: string };
+
 export type ClientMessage =
   | TimeSyncAckMsg
   | JoinRoomMsg
   | StartGameMsg
   | SubmitAnswerMsg
   | RequestHintMsg
-  | LeaveRoomMsg;
+  | LeaveRoomMsg
+  | SetNicknameMsg;
 
 // ─── Error codes ─────────────────────────────────────────────────────────
 

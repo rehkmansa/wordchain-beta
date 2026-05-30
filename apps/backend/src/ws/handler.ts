@@ -14,6 +14,7 @@ import {
   joinRoom,
   leaveRoom,
   requestStart,
+  setNickname,
 } from "./room-manager";
 import { handleTimeSyncAck, startTimeSyncLoop, stopTimeSyncLoop } from "./time-sync";
 
@@ -156,6 +157,9 @@ export const websocketHandlers = {
         return;
       case "start_game":
         void requestStart(room, ws.data.userId);
+        return;
+      case "set_nickname":
+        setNickname(room, ws.data.userId, parsed.nickname);
         return;
       case "submit_answer":
         void room.mutex.run(() => {

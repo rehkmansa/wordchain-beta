@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { selectYou, useMockGame } from "~/lib/mock/use-mock-game";
+import { useEffect, useRef, useState } from "react";
+import { selectYou, useGame } from "~/lib/game/provider";
 import { cn } from "~/lib/utils";
 import { AvatarStack } from "~/ui/avatar";
 import { ConfirmModal } from "~/ui/confirm-modal";
@@ -13,7 +13,7 @@ const RANDOM_NAMES = ["WordWizard", "ChainBreaker", "QuickQuill", "VowelViper", 
 export const Page = () => {
   const { roomId } = useParams({ from: "/game/$roomId/lobby" });
   const navigate = useNavigate();
-  const { state, actions } = useMockGame();
+  const { state, actions } = useGame();
   const { show, viewport } = useToast();
 
   const you = selectYou(state);
@@ -23,6 +23,35 @@ export const Page = () => {
 
   const [name, setName] = useState(you.nickname);
   const [leaveOpen, setLeaveOpen] = useState(false);
+  const nameFocused = useRef(false);
+
+  // Reflect the server-authoritative nickname (trimmed/clamped) unless the user
+  // is mid-edit.
+  useEffect(() => {
+    if (!nameFocused.current) setName(you.nickname);
+  }, [you.nickname]);
+
+  const nameDebounce = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const commitName = (next: string) => {
+    const trimmed = next.trim();
+    if (trimmed && trimmed !== you.nickname) actions.setNickname(trimmed);
+  };
+
+  // Live-broadcast the name as you type (debounced) so others see it update
+  // immediately, not only on blur.
+  const handleNameChange = (next: string) => {
+    setName(next);
+    if (nameDebounce.current) clearTimeout(nameDebounce.current);
+    nameDebounce.current = setTimeout(() => commitName(next), 350);
+  };
+
+  useEffect(
+    () => () => {
+      if (nameDebounce.current) clearTimeout(nameDebounce.current);
+    },
+    [],
+  );
 
   // host start (or bypass start) flips status → navigate everyone into Play
   useEffect(() => {
@@ -43,7 +72,7 @@ export const Page = () => {
     show("Code copied to clipboard");
   };
   const shareLink = () => {
-    writeClipboard(`${window.location.origin}/join?code=${state.room.roomCode}`);
+    writeClipboard(`${window.location.origin}/join/${state.room.roomCode}`);
     show("Invite link copied");
   };
 
@@ -85,15 +114,30 @@ export const Page = () => {
             <div className="flex flex-col items-center gap-2">
               <input
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => handleNameChange(e.target.value)}
+                onFocus={() => {
+                  nameFocused.current = true;
+                }}
+                onBlur={() => {
+                  nameFocused.current = false;
+                  if (nameDebounce.current) clearTimeout(nameDebounce.current);
+                  commitName(name);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") e.currentTarget.blur();
+                }}
+                maxLength={20}
                 aria-label="Display name"
                 className="h-14 w-full rounded-2xl border-2 border-white/40 bg-white/10 px-5 text-center font-sans font-semibold text-[18px] text-white tracking-[-0.01em] outline-none transition-colors placeholder:text-white/40 focus:border-white/70 focus:bg-white/15"
               />
               <button
                 type="button"
-                onClick={() =>
-                  setName(RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)] ?? "Player")
-                }
+                onClick={() => {
+                  const next =
+                    RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)] ?? "Player";
+                  setName(next);
+                  commitName(next);
+                }}
                 className="flex items-center gap-1.5 rounded-full px-3 py-1.5 font-sans font-semibold text-[14px] text-white/80 outline-none cursor-hand hover:bg-white/10"
               >
                 <ShuffleIcon size={16} variant="Linear" /> Randomize
@@ -153,7 +197,10 @@ export const Page = () => {
         confirmLabel={isHost ? "Disband game" : "Leave game"}
         cancelLabel="No, stay here"
         destructive
-        onConfirm={() => navigate({ to: "/" })}
+        onConfirm={() => {
+          actions.leave();
+          navigate({ to: "/" });
+        }}
         onCancel={() => setLeaveOpen(false)}
       />
     </div>
