@@ -74,96 +74,98 @@ export const Page = () => {
   const phase = now >= round.start.roundStartsAt ? "open" : "armed";
 
   return (
-    <motion.div
-      animate={shake}
-      className="relative flex h-screen flex-col overflow-hidden bg-linear-to-b from-brand-purple-500 to-brand-purple-800 text-white"
-    >
-      <TopBar
-        roundNumber={round.index + 1}
-        totalRounds={settings.chainLength}
-        opponentCount={state.room.players.length - 1}
-        score={you.score}
-        onBack={() => setLeaveOpen(true)}
-      />
+    <>
+      <motion.div
+        animate={shake}
+        className="relative flex min-h-screen flex-col overflow-x-clip bg-linear-to-b from-brand-purple-500 to-brand-purple-800 text-white lg:h-screen lg:overflow-hidden"
+      >
+        <TopBar
+          roundNumber={round.index + 1}
+          totalRounds={settings.chainLength}
+          opponentCount={state.room.players.length - 1}
+          score={you.score}
+          onBack={() => setLeaveOpen(true)}
+        />
 
-      {!state.connected && (
-        <div className="bg-danger-500/90 py-1.5 text-center font-sans font-semibold text-[13px] text-white">
-          Reconnecting… your inputs are paused
+        {!state.connected && (
+          <div className="bg-danger-500/90 py-1.5 text-center font-sans font-semibold text-[13px] text-white">
+            Reconnecting… your inputs are paused
+          </div>
+        )}
+
+        <div className="grid min-h-0 flex-1 gap-4 px-4 lg:grid-cols-[360px_1fr] lg:pb-4">
+          {/* desktop sidebar */}
+          <aside className="hidden min-h-0 flex-col gap-3 lg:flex">
+            <div className="flex max-h-72 flex-col rounded-2xl bg-white/8 p-3">
+              <span className="px-1 pb-2 font-sans text-[12px] font-semibold uppercase tracking-wide text-white/40">
+                Progress
+              </span>
+              <ProgressRail
+                total={settings.chainLength}
+                currentIndex={round.index}
+                history={state.history}
+              />
+            </div>
+            <PlayerHud
+              multiplier={you.multiplier}
+              streak={you.streak}
+              livesLeft={you.livesLeft}
+              totalLives={totalLives}
+              pulse={streakPulse}
+            />
+            <SidePanel
+              className="min-h-0 flex-1"
+              feed={state.feed}
+              players={leaderboard}
+              youId={you.id}
+              elimination={settings.elimination}
+            />
+          </aside>
+
+          {/* focal main */}
+          <main className="fancy-scroll-dark flex flex-col items-center gap-4 pt-2 lg:min-h-0 lg:overflow-y-auto">
+            {/* mobile top strip */}
+            <div className="flex w-full items-center justify-between gap-3 lg:hidden">
+              <ProgressDots
+                total={settings.chainLength}
+                currentIndex={round.index}
+                history={state.history}
+              />
+              <StreakPill multiplier={you.multiplier} streak={you.streak} pulse={streakPulse} />
+            </div>
+
+            <div className="flex w-full flex-1 items-center justify-center">
+              <CurrentRound
+                roundNumber={round.index + 1}
+                start={round.start}
+                phase={phase}
+                now={now}
+                typed={round.you.typed}
+                onType={actions.typeGuess}
+                onSubmit={actions.submitGuess}
+                onHint={actions.requestHint}
+                hints={round.you.hints}
+                hintsUsed={round.you.hintsUsed}
+                score={you.score}
+                cooldownUntil={round.you.cooldownUntil}
+                nearMiss={round.you.nearMiss}
+                lock={round.you.lock}
+                spectator={state.eliminated}
+              />
+            </div>
+          </main>
         </div>
-      )}
 
-      <div className="grid min-h-0 flex-1 gap-4 px-4 pb-28 lg:grid-cols-[360px_1fr] lg:pb-4">
-        {/* desktop sidebar */}
-        <aside className="hidden min-h-0 flex-col gap-3 lg:flex">
-          <div className="flex max-h-72 flex-col rounded-2xl bg-white/8 p-3">
-            <span className="px-1 pb-2 font-sans text-[12px] font-semibold uppercase tracking-wide text-white/40">
-              Progress
-            </span>
-            <ProgressRail
-              total={settings.chainLength}
-              currentIndex={round.index}
-              history={state.history}
-            />
-          </div>
-          <PlayerHud
-            multiplier={you.multiplier}
-            streak={you.streak}
-            livesLeft={you.livesLeft}
-            totalLives={totalLives}
-            pulse={streakPulse}
-          />
-          <SidePanel
-            className="min-h-0 flex-1"
-            feed={state.feed}
-            players={leaderboard}
-            youId={you.id}
-            elimination={settings.elimination}
-          />
-        </aside>
-
-        {/* focal main */}
-        <main className="fancy-scroll-dark flex min-h-0 flex-col items-center gap-4 overflow-y-auto pt-2">
-          {/* mobile top strip */}
-          <div className="flex w-full items-center justify-between gap-3 lg:hidden">
-            <ProgressDots
-              total={settings.chainLength}
-              currentIndex={round.index}
-              history={state.history}
-            />
-            <StreakPill multiplier={you.multiplier} streak={you.streak} pulse={streakPulse} />
-          </div>
-
-          <div className="flex w-full flex-1 items-center justify-center">
-            <CurrentRound
-              roundNumber={round.index + 1}
-              start={round.start}
-              phase={phase}
-              now={now}
-              typed={round.you.typed}
-              onType={actions.typeGuess}
-              onSubmit={actions.submitGuess}
-              onHint={actions.requestHint}
-              hints={round.you.hints}
-              hintsUsed={round.you.hintsUsed}
-              score={you.score}
-              cooldownUntil={round.you.cooldownUntil}
-              nearMiss={round.you.nearMiss}
-              lock={round.you.lock}
-              spectator={state.eliminated}
-            />
-          </div>
-        </main>
-      </div>
-
-      {/* mobile bottom sheet for feed / leaderboard */}
-      <MobileSheet
-        open={sheetOpen}
-        onToggle={() => setSheetOpen((o) => !o)}
-        feed={state.feed}
-        players={leaderboard}
-        youId={you.id}
-        elimination={settings.elimination}
-      />
+        {/* mobile feed / leaderboard — in-flow below the board, scroll to reach it */}
+        <MobileSheet
+          open={sheetOpen}
+          onToggle={() => setSheetOpen((o) => !o)}
+          feed={state.feed}
+          players={leaderboard}
+          youId={you.id}
+          elimination={settings.elimination}
+        />
+      </motion.div>
 
       {/* round-end interlude */}
       <AnimatePresence>
@@ -185,7 +187,7 @@ export const Page = () => {
         }}
         onCancel={() => setLeaveOpen(false)}
       />
-    </motion.div>
+    </>
   );
 };
 
@@ -204,29 +206,32 @@ const MobileSheet = ({
   youId: string;
   elimination: boolean;
 }) => (
-  <motion.div
-    className="fixed inset-x-0 bottom-10 z-20 lg:hidden"
-    animate={{ y: open ? 0 : "calc(100% - 56px)" }}
-    transition={{ type: "spring", stiffness: 320, damping: 32 }}
-  >
-    <div className="mx-3 rounded-t-3xl bg-white shadow-[0_-10px_40px_rgba(31,18,77,0.25)]">
+  <div className="mx-3 pb-6 lg:hidden">
+    <div className="overflow-hidden rounded-3xl bg-white shadow-[0_-10px_40px_rgba(31,18,77,0.25)]">
       <button
         type="button"
         onClick={onToggle}
-        className="flex h-14 w-full items-center justify-center gap-2 font-sans font-semibold text-[15px] text-brand-purple-600 cursor-hand"
+        className="relative flex h-14 w-full items-center justify-center gap-2 font-sans font-semibold text-[15px] text-brand-purple-600 cursor-hand"
       >
         <span className="absolute top-2 h-1 w-10 rounded-full bg-grey-300/60" />
         {open ? "Hide" : "Feed & Leaderboard"}
       </button>
-      <div className="h-96 px-2 pb-3">
-        <SidePanel
-          className="h-full"
-          feed={feed}
-          players={players}
-          youId={youId}
-          elimination={elimination}
-        />
-      </div>
+      <motion.div
+        initial={false}
+        animate={{ height: open ? "auto" : 0 }}
+        transition={{ type: "spring", stiffness: 320, damping: 32 }}
+        className="overflow-hidden"
+      >
+        <div className="h-96 px-2 pb-3">
+          <SidePanel
+            className="h-full"
+            feed={feed}
+            players={players}
+            youId={youId}
+            elimination={elimination}
+          />
+        </div>
+      </motion.div>
     </div>
-  </motion.div>
+  </div>
 );
