@@ -4,9 +4,12 @@
   --font-sans: "Fredoka", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Digitalt", "Fredoka", ui-sans-serif, system-ui, sans-serif;
 
+  --color-brand-purple-400: #b388ff;
   --color-brand-purple-500: #9c59fe;
   --color-brand-purple-600: #6f53fd;
   --color-brand-purple-700: #8156fd;
+  --color-brand-purple-800: #5a3fd0;
+  --color-brand-purple-900: #3f2c9e;
 
   --color-brand-yellow-500: #fddb6d;
 
@@ -17,14 +20,86 @@
   --color-logo-purple-grad-from: #bc9eff;
   --color-logo-purple-grad-to: #a17cff;
 
+  /* semantic — reward / score / win */
+  --color-gold-500: #fdcd6d;
+  --color-gold-600: #e8951a;
+
+  /* semantic — solved / correct */
+  --color-success-500: #36cf8b;
+  --color-success-600: #3aa657;
+  --color-success-700: #157a4c;
+
+  /* semantic — active target / timer warning */
+  --color-amber-500: #f9a03f;
+  --color-amber-600: #e57e16;
+
+  /* semantic — wrong / lose / danger / destructive */
+  --color-danger-500: #fb5d5d;
+  --color-danger-600: #e21300;
+
   --color-grey-300: #a4ABB8;
   --color-grey-400: #808897;
+  --color-grey-500: #5b6270;
   --color-grey-700: #272835;
   --color-grey-800: #15161e;
 }
 
 @utility cursor-hand {
   cursor: url("/src/assets/cursor-hand.svg") 14 4, pointer;
+}
+
+/* Chunky "game" scrollbar — fat rounded candy-pill thumb in a soft track */
+@utility fancy-scroll {
+  scrollbar-width: auto;
+  scrollbar-color: var(--color-brand-purple-500) color-mix(in srgb, var(--color-brand-purple-500) 12%, transparent);
+}
+@utility fancy-scroll-dark {
+  scrollbar-width: auto;
+  scrollbar-color: rgba(255, 255, 255, 0.55) rgba(255, 255, 255, 0.1);
+}
+
+.fancy-scroll::-webkit-scrollbar,
+.fancy-scroll-dark::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+.fancy-scroll::-webkit-scrollbar-track {
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--color-brand-purple-500) 12%, transparent);
+  margin: 4px;
+}
+.fancy-scroll-dark::-webkit-scrollbar-track {
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 4px;
+}
+.fancy-scroll::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  background-image: linear-gradient(
+    to bottom,
+    var(--color-brand-purple-400),
+    var(--color-brand-purple-600)
+  );
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.45);
+}
+.fancy-scroll-dark::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.4));
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.55);
+}
+.fancy-scroll::-webkit-scrollbar-thumb:hover {
+  background-image: linear-gradient(
+    to bottom,
+    var(--color-brand-purple-500),
+    var(--color-brand-purple-700)
+  );
+}
+.fancy-scroll-dark::-webkit-scrollbar-thumb:hover {
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.55));
 }
 
 html,
