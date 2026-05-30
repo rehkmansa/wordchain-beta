@@ -1,8 +1,10 @@
 import type { GameSettings } from "@repo/shared";
 import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { RULES } from "~/lib/mock/fixtures";
-import { createMockRoom } from "~/lib/mock/rooms";
+import { ensureAnonSession } from "~/lib/api/auth";
+import { ApiError } from "~/lib/api/client";
+import { createRoom } from "~/lib/api/rooms";
+import { RULES } from "~/lib/constants";
 import { Button } from "~/ui/button";
 import { Emoji } from "~/ui/emoji";
 import { Slider } from "~/ui/slider";
@@ -30,28 +32,47 @@ const Label = ({ children }: { children: string }) => (
   </span>
 );
 
+const CREATE_ERROR: Record<string, string> = {
+  TOO_MANY_ROOMS: "You already have an active room. Close it before making another.",
+  RATE_LIMITED: "Slow down a moment — too many rooms created. Try again shortly.",
+  INVALID_SETTINGS: "Those settings aren't valid. Adjust and try again.",
+};
+
 export const Page = () => {
   const navigate = useNavigate();
   const [chainLength, setChainLength] = useState<number>(RULES.CHAIN_DEFAULT);
   const [timeIndex, setTimeIndex] = useState(1); // default 15s
   const [elimination, setElimination] = useState(false);
   const [lives, setLives] = useState<number>(RULES.LIVES_DEFAULT);
+  const [creating, setCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const roundTimeMs = PRESETS[timeIndex] ?? 15_000;
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
+    if (creating) return;
+    setCreating(true);
+    setError(null);
     const settings: GameSettings = {
       chainLength,
       roundTimeMs,
       elimination,
       ...(elimination ? { lives } : {}),
     };
-    const { roomCode } = createMockRoom(settings);
-    navigate({ to: "/game/$roomId/lobby", params: { roomId: roomCode } });
+    try {
+      await ensureAnonSession();
+      const { roomCode, gameId } = await createRoom("group", settings);
+      sessionStorage.setItem(`wc:game:${roomCode}`, gameId);
+      navigate({ to: "/game/$roomId/lobby", params: { roomId: roomCode } });
+    } catch (e) {
+      const code = e instanceof ApiError ? e.code : "INTERNAL";
+      setError(CREATE_ERROR[code] ?? "Couldn't create the room. Please try again.");
+      setCreating(false);
+    }
   };
 
   return (
-    <div className="flex max-h-screen flex-col items-center overflow-y-auto px-12 pt-16 pb-16 fancy-scroll">
+    <div className="flex min-h-screen flex-col items-center px-4 pt-16 pb-16 sm:px-12 lg:max-h-screen lg:overflow-y-auto lg:fancy-scroll">
       <div className="mb-9 max-w-100">
         <StartScreenHeader title="Create Game" desc="Set the rules, then invite your friends." />
       </div>
@@ -119,12 +140,18 @@ export const Page = () => {
           )}
         </div>
 
+        {error && (
+          <p className="-mt-2 text-center font-sans font-medium text-[14px] text-danger-500">
+            {error}
+          </p>
+        )}
+
         <div className="flex gap-3">
           <Button variant="outline" className="flex-1" onClick={() => navigate({ to: "/" })}>
             Back
           </Button>
-          <Button className="flex-[1.6]" onClick={handleCreate}>
-            Create Room
+          <Button className="flex-[1.6]" disabled={creating} onClick={() => void handleCreate()}>
+            {creating ? "Creating…" : "Create Room"}
           </Button>
         </div>
       </div>

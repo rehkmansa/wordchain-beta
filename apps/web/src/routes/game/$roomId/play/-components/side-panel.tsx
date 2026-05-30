@@ -1,6 +1,6 @@
 import type { PublicPlayer } from "@repo/shared";
 import { useState } from "react";
-import type { FeedEntry } from "~/lib/mock/use-mock-game";
+import type { FeedEntry } from "~/lib/game/types";
 import { cn } from "~/lib/utils";
 import { MedalIcon, PeopleIcon } from "~/ui/icons";
 import { ScrollArea } from "~/ui/scroll-area";

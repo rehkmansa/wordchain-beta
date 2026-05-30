@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import type { FeedEntry } from "~/lib/mock/use-mock-game";
+import type { FeedEntry } from "~/lib/game/types";
 import { cn } from "~/lib/utils";
 import { Avatar } from "~/ui/avatar";
 

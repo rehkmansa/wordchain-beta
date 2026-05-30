@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { selectLeaderboard, selectYou, useMockGame } from "~/lib/mock/use-mock-game";
+import { selectLeaderboard, selectYou, useGame } from "~/lib/game/provider";
 import { useNow } from "~/lib/use-now";
 import { ConfirmModal } from "~/ui/confirm-modal";
 import { CurrentRound } from "./-components/current-round";
@@ -14,9 +14,9 @@ import { TopBar } from "./-components/top-bar";
 export const Page = () => {
   const { roomId } = useParams({ from: "/game/$roomId/play" });
   const navigate = useNavigate();
-  const { state, actions } = useMockGame();
+  const { state, actions, clockOffset } = useGame();
   const ticking = state.status === "playing" || state.status === "interlude";
-  const now = useNow(ticking);
+  const now = useNow(ticking, clockOffset);
 
   const [leaveOpen, setLeaveOpen] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
@@ -45,6 +45,9 @@ export const Page = () => {
     );
   }
 
+  // armed during the pre-round lead-in (server roundStartsAt is a few hundred ms out)
+  const phase = now >= round.start.roundStartsAt ? "open" : "armed";
+
   return (
     <div className="relative flex h-screen flex-col overflow-hidden bg-linear-to-b from-brand-purple-500 to-brand-purple-800 text-white">
       <TopBar
@@ -61,7 +64,7 @@ export const Page = () => {
         </div>
       )}
 
-      <div className="grid min-h-0 flex-1 gap-4 px-4 pb-4 lg:grid-cols-[360px_1fr]">
+      <div className="grid min-h-0 flex-1 gap-4 px-4 pb-28 lg:grid-cols-[360px_1fr] lg:pb-4">
         {/* desktop sidebar */}
         <aside className="hidden min-h-0 flex-col gap-3 lg:flex">
           <div className="flex max-h-72 flex-col rounded-2xl bg-white/8 p-3">
@@ -105,7 +108,7 @@ export const Page = () => {
             <CurrentRound
               roundNumber={round.index + 1}
               start={round.start}
-              phase={round.phase}
+              phase={phase}
               now={now}
               typed={round.you.typed}
               onType={actions.typeGuess}
@@ -147,7 +150,10 @@ export const Page = () => {
         confirmLabel="Leave game"
         cancelLabel="Keep playing"
         destructive
-        onConfirm={() => navigate({ to: "/" })}
+        onConfirm={() => {
+          actions.leave();
+          navigate({ to: "/" });
+        }}
         onCancel={() => setLeaveOpen(false)}
       />
     </div>
@@ -164,7 +170,7 @@ const MobileSheet = ({
 }: {
   open: boolean;
   onToggle: () => void;
-  feed: import("~/lib/mock/use-mock-game").FeedEntry[];
+  feed: import("~/lib/game/types").FeedEntry[];
   players: import("@repo/shared").PublicPlayer[];
   youId: string;
   elimination: boolean;

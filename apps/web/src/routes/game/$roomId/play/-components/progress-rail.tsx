@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import type { RoundHistory } from "~/lib/mock/use-mock-game";
+import type { RoundHistory } from "~/lib/game/types";
 import { cn } from "~/lib/utils";
 import { CheckIcon, CloseIcon, LockIcon } from "~/ui/icons";
 import { ScrollArea } from "~/ui/scroll-area";

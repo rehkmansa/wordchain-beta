@@ -1,7 +1,7 @@
 import type { GameOverMsg } from "@repo/shared";
 import { useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { selectYou, useMockGame } from "~/lib/mock/use-mock-game";
+import { selectYou, useGame } from "~/lib/game/provider";
 import { cn } from "~/lib/utils";
 import { Avatar } from "~/ui/avatar";
 import { Emoji, type EmojiName } from "~/ui/emoji";
@@ -26,7 +26,7 @@ const PODIUM_MEDAL: Record<number, EmojiName> = {
 
 export const Page = () => {
   const navigate = useNavigate();
-  const { state } = useMockGame();
+  const { state } = useGame();
   const you = selectYou(state);
 
   const standings = state.gameOver?.standings ?? [];
@@ -53,7 +53,7 @@ export const Page = () => {
   return (
     <div
       className={cn(
-        "relative h-screen overflow-hidden text-white",
+        "relative min-h-screen text-white lg:h-screen lg:overflow-hidden",
         won
           ? "bg-linear-to-b from-brand-purple-500 to-brand-purple-800"
           : "bg-linear-to-b from-danger-500 to-danger-600",
@@ -61,7 +61,7 @@ export const Page = () => {
     >
       <Burst won={won} />
 
-      <div className="relative z-10 mx-auto flex h-full max-w-xl flex-col items-center px-6 py-8">
+      <div className="relative z-10 mx-auto flex max-w-xl flex-col items-center px-6 py-8 lg:h-full">
         {/* hero (fixed) */}
         <div className="flex shrink-0 flex-col items-center">
           <motion.div
@@ -98,8 +98,8 @@ export const Page = () => {
 
         {/* standings list — the single scroll region */}
         {rest.length > 0 ? (
-          <div className="mt-5 flex min-h-0 w-full flex-1 flex-col">
-            <ScrollArea className="min-h-0 flex-1" tone="white">
+          <div className="mt-5 flex w-full flex-col lg:min-h-0 lg:flex-1">
+            <ScrollArea className="lg:min-h-0 lg:flex-1" tone="white">
               <div className="flex flex-col gap-1.5">
                 {rest.map((s) => (
                   <StandingRow key={s.playerId} standing={s} youId={you.id} />
@@ -113,7 +113,7 @@ export const Page = () => {
             )}
           </div>
         ) : (
-          <div className="flex-1" />
+          <div className="lg:flex-1" />
         )}
 
         {/* actions (fixed) */}

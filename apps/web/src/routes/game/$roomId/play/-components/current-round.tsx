@@ -139,7 +139,7 @@ export const CurrentRound = ({
   };
 
   return (
-    <div className="flex w-full max-w-2xl flex-col items-center gap-7 rounded-3xl bg-white/8 px-6 py-8 backdrop-blur-sm sm:px-10">
+    <div className="flex w-full max-w-2xl flex-col items-center gap-5 rounded-3xl bg-white/8 px-6 py-6 backdrop-blur-sm sm:gap-7 sm:px-10 sm:py-8">
       <span className="font-sans font-semibold text-[13px] uppercase tracking-[0.18em] text-white/55">
         Round {roundNumber}
       </span>
