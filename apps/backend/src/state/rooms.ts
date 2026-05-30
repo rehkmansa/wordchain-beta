@@ -86,7 +86,7 @@ export function findHostedRoom(userId: string): Room | null {
 export function maxPlayersFor(mode: GameMode): number {
   if (mode === "solo") return 1;
   if (mode === "dual") return 2;
-  return 8;
+  return 100;
 }
 
 export function minPlayersFor(mode: GameMode): number {
