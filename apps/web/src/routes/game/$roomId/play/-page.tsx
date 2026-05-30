@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "@tanstack/react-router";
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useFeedback } from "~/lib/feedback";
 import { selectLeaderboard, selectYou, useGame } from "~/lib/game/provider";
 import { useNow } from "~/lib/use-now";
 import { ConfirmModal } from "~/ui/confirm-modal";
@@ -20,6 +21,30 @@ export const Page = () => {
 
   const [leaveOpen, setLeaveOpen] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  // visual feedback driven off the feedback bus (sound/haptics react separately)
+  const shake = useAnimationControls();
+  const [streakPulse, setStreakPulse] = useState(0);
+  const reduceMotion = useMemo(
+    () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false,
+    [],
+  );
+  const shakeRef = useRef(shake);
+  shakeRef.current = shake;
+  useFeedback((e) => {
+    switch (e.kind) {
+      case "wrong":
+      case "streakBreak":
+        if (!reduceMotion) {
+          shakeRef.current.start({ x: [0, -12, 12, -8, 8, -4, 0] }, { duration: 0.42 });
+        }
+        break;
+      case "streakUp":
+      case "streakMax":
+        setStreakPulse((n) => n + 1);
+        break;
+    }
+  });
 
   // game over → standings screen
   useEffect(() => {
@@ -49,7 +74,10 @@ export const Page = () => {
   const phase = now >= round.start.roundStartsAt ? "open" : "armed";
 
   return (
-    <div className="relative flex h-screen flex-col overflow-hidden bg-linear-to-b from-brand-purple-500 to-brand-purple-800 text-white">
+    <motion.div
+      animate={shake}
+      className="relative flex h-screen flex-col overflow-hidden bg-linear-to-b from-brand-purple-500 to-brand-purple-800 text-white"
+    >
       <TopBar
         roundNumber={round.index + 1}
         totalRounds={settings.chainLength}
@@ -82,6 +110,7 @@ export const Page = () => {
             streak={you.streak}
             livesLeft={you.livesLeft}
             totalLives={totalLives}
+            pulse={streakPulse}
           />
           <SidePanel
             className="min-h-0 flex-1"
@@ -101,7 +130,7 @@ export const Page = () => {
               currentIndex={round.index}
               history={state.history}
             />
-            <StreakPill multiplier={you.multiplier} streak={you.streak} />
+            <StreakPill multiplier={you.multiplier} streak={you.streak} pulse={streakPulse} />
           </div>
 
           <div className="flex w-full flex-1 items-center justify-center">
@@ -156,7 +185,7 @@ export const Page = () => {
         }}
         onCancel={() => setLeaveOpen(false)}
       />
-    </div>
+    </motion.div>
   );
 };
 

@@ -15,4 +15,6 @@ export {
   Shuffle as ShuffleIcon,
   TickCircle as CheckIcon,
   Timer1 as TimerIcon,
+  VolumeHigh as SoundIcon,
+  VolumeSlash as MuteIcon,
 } from "iconsax-reactjs";

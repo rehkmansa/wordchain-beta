@@ -1,24 +1,54 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
+import { useEffect } from "react";
 import { cn } from "~/lib/utils";
 import { Emoji } from "~/ui/emoji";
 
 // ── Streak + multiplier pill ────────────────────────────────────────────────
-export const StreakPill = ({ multiplier, streak }: { multiplier: number; streak: number }) => {
+// `pulse` is a counter the play screen bumps on every streak-up / streak-max so
+// the pill pops and a flame floats off — the celebration the chain earns.
+export const StreakPill = ({
+  multiplier,
+  streak,
+  pulse = 0,
+}: {
+  multiplier: number;
+  streak: number;
+  pulse?: number;
+}) => {
   const atCap = multiplier >= 2;
   const active = multiplier > 1 || streak > 0;
   const flames = atCap ? 2 : 1;
+  const controls = useAnimationControls();
+
+  useEffect(() => {
+    if (pulse > 0) controls.start({ scale: [1, 1.28, 1] }, { duration: 0.4, ease: "easeOut" });
+  }, [pulse, controls]);
 
   return (
     <motion.div
-      key={active ? `on-${multiplier}` : "off"}
-      initial={{ scale: 0.9 }}
-      animate={{ scale: 1 }}
-      transition={{ type: "spring", stiffness: 400, damping: 18 }}
+      animate={controls}
       className={cn(
-        "flex items-center gap-1.5 rounded-full px-3 py-1.5 font-sans font-semibold text-[14px] tabular-nums",
+        "relative flex items-center gap-1.5 rounded-full px-3 py-1.5 font-sans font-semibold text-[14px] tabular-nums",
         active ? "bg-amber-500/20 text-amber-500" : "bg-white/8 text-white/45",
+        atCap && "animate-pulse ring-2 ring-amber-500/60",
       )}
     >
+      {/* flame floats up on each streak gain */}
+      <AnimatePresence>
+        {pulse > 0 && (
+          <motion.span
+            key={pulse}
+            initial={{ opacity: 0, y: 0, scale: 0.6 }}
+            animate={{ opacity: [0, 1, 0], y: -26, scale: 1.2 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="pointer-events-none absolute -top-1 left-1/2 -translate-x-1/2"
+          >
+            <Emoji name="fire" size={20} />
+          </motion.span>
+        )}
+      </AnimatePresence>
+
       {active ? (
         <span className="flex items-center -space-x-1">
           {Array.from({ length: flames }, (_, i) => (
@@ -66,18 +96,20 @@ export const PlayerHud = ({
   streak,
   livesLeft,
   totalLives,
+  pulse,
 }: {
   multiplier: number;
   streak: number;
   livesLeft: number | null;
   totalLives: number;
+  pulse?: number;
 }) => (
   <div className="flex items-center justify-between gap-3 rounded-2xl bg-white/8 px-4 py-3">
     <span className="font-sans text-[12px] font-semibold uppercase tracking-wide text-white/40">
       You
     </span>
     <div className="flex items-center gap-3">
-      <StreakPill multiplier={multiplier} streak={streak} />
+      <StreakPill multiplier={multiplier} streak={streak} pulse={pulse} />
       {livesLeft !== null && <Lives livesLeft={livesLeft} total={totalLives} />}
     </div>
   </div>

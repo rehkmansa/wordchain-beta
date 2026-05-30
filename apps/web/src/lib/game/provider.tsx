@@ -1,4 +1,4 @@
-import type { GameMode, GameSettings, ServerMessage } from "@repo/shared";
+import type { GameMode, GameSettings } from "@repo/shared";
 import {
   createContext,
   type ReactNode,
@@ -10,33 +10,10 @@ import {
   useState,
 } from "react";
 import { buildWsUrl } from "~/lib/api/ws-url";
-import { playSfx } from "~/lib/audio/sfx";
+import { deriveFeedback, emitFeedback } from "~/lib/feedback";
 import { initialState, reducer } from "./reducer";
 import { GameSocket } from "./socket";
 import type { GameState } from "./types";
-
-// Audio cues for the key game moments (respects the persisted mute).
-const playMessageSfx = (msg: ServerMessage, youId: string): void => {
-  switch (msg.type) {
-    case "answer_result":
-      playSfx(msg.correct ? "correct" : "wrong");
-      break;
-    case "hint_revealed":
-      playSfx("hint");
-      break;
-    case "round_start":
-      playSfx("start");
-      break;
-    case "player_locked":
-      if (msg.playerId !== youId) playSfx("opponent");
-      break;
-    case "game_over": {
-      const me = msg.standings.find((s) => s.playerId === youId);
-      playSfx(me?.placement === 1 ? "win" : "lose");
-      break;
-    }
-  }
-};
 
 export { selectLeaderboard, selectYou } from "./types";
 
@@ -85,7 +62,8 @@ export const GameProvider = ({
   useEffect(() => {
     const socket = new GameSocket(buildWsUrl(roomCode, gameId), {
       onMessage: (msg) => {
-        playMessageSfx(msg, youId);
+        // stateRef still holds the pre-message state here — needed to diff streaks
+        for (const e of deriveFeedback(stateRef.current, msg, youId)) emitFeedback(e);
         dispatch(msg);
       },
       onConnected: (connected) => dispatch({ type: "conn", connected }),

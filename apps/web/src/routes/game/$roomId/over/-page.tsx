@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { selectYou, useGame } from "~/lib/game/provider";
 import { cn } from "~/lib/utils";
 import { Avatar } from "~/ui/avatar";
+import { Confetti } from "~/ui/confetti";
 import { Emoji, type EmojiName } from "~/ui/emoji";
 import { ScrollArea } from "~/ui/scroll-area";
 
@@ -60,6 +61,7 @@ export const Page = () => {
       )}
     >
       <Burst won={won} />
+      {won && <Confetti />}
 
       <div className="relative z-10 mx-auto flex max-w-xl flex-col items-center px-6 py-8 lg:h-full">
         {/* hero (fixed) */}

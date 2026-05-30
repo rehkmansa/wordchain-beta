@@ -1,6 +1,7 @@
 import type { RoundStartMsg } from "@repo/shared";
 import { AnimatePresence, motion } from "framer-motion";
 import { type FormEvent, useMemo } from "react";
+import { playSfx } from "~/lib/audio/sfx";
 import { cn } from "~/lib/utils";
 import { CountdownBar } from "~/ui/countdown";
 import { Emoji } from "~/ui/emoji";
@@ -236,6 +237,7 @@ export const CurrentRound = ({
           ) : (
             <button
               type="submit"
+              onPointerDown={() => playSfx("tap")}
               disabled={armed || !typed.trim()}
               className={cn(
                 "h-16 w-full overflow-hidden rounded-2xl bg-white font-sans font-semibold text-[18px] text-brand-purple-600 shadow-[0_8px_22px_rgba(31,18,77,0.28)] outline-none cursor-hand",
