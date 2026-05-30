@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-// Ticking clock for countdowns. Returns Date.now() refreshed ~`fps` times/sec
-// while `active`. rAF-based so it pauses with the tab.
-export const useNow = (active = true, fps = 12) => {
-  const [now, setNow] = useState(() => Date.now());
+// Ticking server-aligned clock for countdowns. Returns Date.now() + offset,
+// refreshed ~`fps` times/sec while `active`. rAF-based so it pauses with the tab.
+export const useNow = (active = true, offset = 0, fps = 12) => {
+  const [now, setNow] = useState(() => Date.now() + offset);
 
   useEffect(() => {
     if (!active) return;
@@ -13,13 +13,13 @@ export const useNow = (active = true, fps = 12) => {
     const tick = (t: number) => {
       if (t - last >= interval) {
         last = t;
-        setNow(Date.now());
+        setNow(Date.now() + offset);
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [active, fps]);
+  }, [active, fps, offset]);
 
   return now;
 };
