@@ -22,6 +22,7 @@ bun dev
 | [API.md](docs/API.md) | Frontend ↔ backend contract |
 | [WORKFLOWS.md](docs/WORKFLOWS.md) | User flows |
 | [SECURITY.md](docs/SECURITY.md) | Threat model |
+| [OPERATIONS.md](docs/OPERATIONS.md) | VPS deploy, CI/CD, runbook |
 
 ## Stack
 

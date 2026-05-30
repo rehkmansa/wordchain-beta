@@ -25,6 +25,9 @@ Don't read everything — load docs based on what you're working on.
 **Security / config:**
 - [docs/SECURITY.md](docs/SECURITY.md) — threat model, key storage
 
+**Deploy / ops:**
+- [docs/OPERATIONS.md](docs/OPERATIONS.md) — VPS deploy, CI/CD, Caddy, PM2, bootstrap
+
 ## Stack
 
 - **Runtime:** Bun
