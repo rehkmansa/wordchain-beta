@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SplashRouteImport } from './routes/_splash'
 import { Route as PreviewRouteRouteImport } from './routes/preview/route'
+import { Route as JoinCodeRouteRouteImport } from './routes/join/$code/route'
 import { Route as GameRoomIdRouteRouteImport } from './routes/game/$roomId/route'
 import { Route as SplashIndexRouteRouteImport } from './routes/_splash/index/route'
 import { Route as GameRoomIdPlayRouteRouteImport } from './routes/game/$roomId/play/route'
@@ -26,6 +27,11 @@ const SplashRoute = SplashRouteImport.update({
 const PreviewRouteRoute = PreviewRouteRouteImport.update({
   id: '/preview',
   path: '/preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JoinCodeRouteRoute = JoinCodeRouteRouteImport.update({
+  id: '/join/$code',
+  path: '/join/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GameRoomIdRouteRoute = GameRoomIdRouteRouteImport.update({
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/preview': typeof PreviewRouteRoute
   '/': typeof SplashIndexRouteRoute
   '/game/$roomId': typeof GameRoomIdRouteRouteWithChildren
+  '/join/$code': typeof JoinCodeRouteRoute
   '/game/create': typeof SplashGameCreateRouteRoute
   '/game/join': typeof SplashGameJoinRouteRoute
   '/game/$roomId/lobby': typeof GameRoomIdLobbyRouteRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   '/preview': typeof PreviewRouteRoute
   '/': typeof SplashIndexRouteRoute
   '/game/$roomId': typeof GameRoomIdRouteRouteWithChildren
+  '/join/$code': typeof JoinCodeRouteRoute
   '/game/create': typeof SplashGameCreateRouteRoute
   '/game/join': typeof SplashGameJoinRouteRoute
   '/game/$roomId/lobby': typeof GameRoomIdLobbyRouteRoute
@@ -90,6 +98,7 @@ export interface FileRoutesById {
   '/_splash': typeof SplashRouteWithChildren
   '/_splash/': typeof SplashIndexRouteRoute
   '/game/$roomId': typeof GameRoomIdRouteRouteWithChildren
+  '/join/$code': typeof JoinCodeRouteRoute
   '/_splash/game/create': typeof SplashGameCreateRouteRoute
   '/_splash/game/join': typeof SplashGameJoinRouteRoute
   '/game/$roomId/lobby': typeof GameRoomIdLobbyRouteRoute
@@ -102,6 +111,7 @@ export interface FileRouteTypes {
     | '/preview'
     | '/'
     | '/game/$roomId'
+    | '/join/$code'
     | '/game/create'
     | '/game/join'
     | '/game/$roomId/lobby'
@@ -112,6 +122,7 @@ export interface FileRouteTypes {
     | '/preview'
     | '/'
     | '/game/$roomId'
+    | '/join/$code'
     | '/game/create'
     | '/game/join'
     | '/game/$roomId/lobby'
@@ -123,6 +134,7 @@ export interface FileRouteTypes {
     | '/_splash'
     | '/_splash/'
     | '/game/$roomId'
+    | '/join/$code'
     | '/_splash/game/create'
     | '/_splash/game/join'
     | '/game/$roomId/lobby'
@@ -134,6 +146,7 @@ export interface RootRouteChildren {
   PreviewRouteRoute: typeof PreviewRouteRoute
   SplashRoute: typeof SplashRouteWithChildren
   GameRoomIdRouteRoute: typeof GameRoomIdRouteRouteWithChildren
+  JoinCodeRouteRoute: typeof JoinCodeRouteRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -150,6 +163,13 @@ declare module '@tanstack/react-router' {
       path: '/preview'
       fullPath: '/preview'
       preLoaderRoute: typeof PreviewRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/join/$code': {
+      id: '/join/$code'
+      path: '/join/$code'
+      fullPath: '/join/$code'
+      preLoaderRoute: typeof JoinCodeRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/game/$roomId': {
@@ -239,6 +259,7 @@ const rootRouteChildren: RootRouteChildren = {
   PreviewRouteRoute: PreviewRouteRoute,
   SplashRoute: SplashRouteWithChildren,
   GameRoomIdRouteRoute: GameRoomIdRouteRouteWithChildren,
+  JoinCodeRouteRoute: JoinCodeRouteRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
